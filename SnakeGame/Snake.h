@@ -1,8 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Constants.h"
-#include "Game.h"
 #include "Apple.h"
+
 
 namespace SnakeGame
 {
@@ -23,7 +23,6 @@ namespace SnakeGame
 		float snakeY = 0;
 		float snakeSpeed = SNAKE_SPEED;
 		int snakeDirection = 0; //0 - Right, 1 - Up, 2 - Left, 3 - Down.
-		//int desiredDirection = 0; //gonna use it to create grid movement
 		sf::RectangleShape snakeShape;
 		std::vector<SnakeTail> tail; //Vector for snake's tail
 		SnakeTail tailSegment;
@@ -42,5 +41,5 @@ namespace SnakeGame
 	//---------------------------------
 	void HandleInput(Snake& snake);
 	void UpdateSnakeState(Snake& snake, Apple& apple);
-	void UpdateSnakePositionOnScreen(Snake& snake, sf::RenderWindow& window);
+	void UpdateSnakePositionOnScreen(Snake& snake);
 }

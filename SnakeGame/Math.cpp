@@ -15,7 +15,6 @@ namespace SnakeGame
 
 	bool DidSnakeCollideWithTail(Snake& snake)
 	{
-		//return (snake.snakeX == snake.tail[].tailX && snake.snakeY == snake.tail[].tailX);
 		for (const auto& segment : snake.tail)
 		{
 			if (snake.snakeX == segment.tailX && snake.snakeY == segment.tailY)

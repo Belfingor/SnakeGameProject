@@ -9,7 +9,6 @@ namespace SnakeGame
 		snake.snakeY = SCREEN_HEIGHT / 2.f;
 		snake.snakeSpeed = SNAKE_SPEED;
 		snake.snakeDirection = 0;
-		//snake.desiredDirection = 0; //Variable to create a grid movement for snake
 		snake.snakeShape.setSize(sf::Vector2f(SNAKE_SIZE, SNAKE_SIZE));
 		snake.snakeShape.setFillColor(sf::Color::Green);
 		snake.snakeShape.setOrigin(SNAKE_SIZE / 2.f, SNAKE_SIZE / 2.f);
@@ -23,7 +22,6 @@ namespace SnakeGame
 		for (int i = 0; i < NUM_TAILS; ++i)
 		{
 			//init tail segment position
-
 			snake.tailSegment.tailX = snake.snakeX - SNAKE_SIZE; //(i + 1)
 			snake.tailSegment.tailY = snake.snakeY;
 
@@ -41,7 +39,6 @@ namespace SnakeGame
 	void UpdateSnakeTail(Snake& snake)
 	{
 		//Update position of each segment to follow the previous segment (I mean "next" segment hehe)
-
 		for (size_t i = snake.tail.size() - 1; i > 0; --i)
 		{
 			snake.tail[i].tailX = snake.tail[i - 1].tailX;
@@ -125,7 +122,7 @@ namespace SnakeGame
 			snake.snakeY = snake.snakeY + snake.snakeSpeed;
 		}
 
-		if (DidSnakeCollideWithApple(snake, apple))
+		if (DidSnakeCollideWithApple(snake, apple)) //checking here if snake collided with apple
 		{
 			snake.tail.push_back(snake.tailSegment);
 		}
@@ -133,10 +130,10 @@ namespace SnakeGame
 		UpdateSnakeTail(snake); //going to update tail state here as well
 	}
 
-	void UpdateSnakePositionOnScreen(Snake& snake, sf::RenderWindow& window)
+	void UpdateSnakePositionOnScreen(Snake& snake)
 	{
 		snake.snakeShape.setPosition(snake.snakeX, snake.snakeY);
-		window.draw(snake.snakeShape);
+		
 	}
 }
 

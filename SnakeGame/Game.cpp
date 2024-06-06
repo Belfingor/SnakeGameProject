@@ -1,4 +1,6 @@
 #include "Game.h"
+#include <SFML/Graphics.hpp>
+
 
 namespace SnakeGame
 {
@@ -12,6 +14,41 @@ namespace SnakeGame
 				grid.cell[i][j].y = i * (SCREEN_HEIGHT / GRID_CELLS_VERTICAL); //Y coordinate of cell on screen
 			}
 		}
+	}
+	void InitGame(Game& game)
+	{
+		InitGrid(game.grid);
+		InitSnake(game.snake);
+		InitApple(game.apple);
+	}
+	void UpdateGame(Game& game, sf::RenderWindow& window)
+	{
+		HandleInput(game.snake);
+		UpdateSnakeState(game.snake, game.apple);
+		UpdateSnakePositionOnScreen(game.snake);
+
+		//check for border collision
+		if (DidSnakeCollideWithWall(game.snake))
+		{
+			window.close();
+		}
+
+		if (DidSnakeCollideWithTail(game.snake))
+		{
+			window.close();
+		}
+
+		//check if apple is eaten
+		if (DidSnakeCollideWithApple(game.snake, game.apple))
+		{
+			SetRandomPositionForApple(game.apple);
+		}
+	}
+	void DrawGame(Game& game, sf::RenderWindow& window)
+	{
+		window.draw(game.snake.snakeShape);
+		DrawSnakeTail(window, game.snake);
+		window.draw(game.apple.appleShape);
 	}
 }
 

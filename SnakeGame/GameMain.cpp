@@ -1,35 +1,27 @@
 ﻿#include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include "Constants.h"
 #include "Game.h"
-#include "Apple.h"
-#include "Math.h"
 
 using namespace SnakeGame;
 
 int main()
 {
 	//--------------------------------------------------------------------------------
-	//Init seed for Rand functions
+	// Init seed for Rand functions
 	int seed = (int)time(nullptr);
 	srand(seed);
 
 	// Init Window
 	sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Snake Game");
 
-	//Init Game Clock
+	// Init Game Clock
 	sf::Clock gameClock;
 	float lastTime = gameClock.getElapsedTime().asSeconds();
 	//--------------------------------------------------------------------------------
 
-	//Init Snake and Invisible Grid for movement
-	Snake snake;
-	Grid grid;
-	Apple apple;
-	InitSnake(snake); // also includes tail initiation
-	InitGrid(grid);
-	InitApple(apple);
-
+	// Game Initiation
+	Game game;
+	InitGame(game);
 
 	//--------------------------------------------------------------------------------
 	// Lets try to draw my grid here
@@ -48,8 +40,6 @@ int main()
 		gridLines.append(sf::Vertex(sf::Vector2f(i * (SCREEN_HEIGHT / GRID_CELLS_VERTICAL), SCREEN_HEIGHT), sf::Color::White));
 	}
 	//--------------------------------------------------------------------------------
-
-
 
 	//Main loop
 	while (window.isOpen())
@@ -74,35 +64,11 @@ int main()
 		}*/
 
 
-
-		HandleInput(snake);
-		//snake movement updates
-		UpdateSnakeState(snake, apple);
-
-
-		//check for border collision
-		if (DidSnakeCollideWithWall(snake))
-		{
-			window.close();
-		}
-
-		if (DidSnakeCollideWithTail(snake))
-		{
-			window.close();
-		}
-
-		//check if apple is eaten
-		if (DidSnakeCollideWithApple(snake, apple))
-		{
-			SetRandomPositionForApple(apple);
-		}
-
+		UpdateGame(game, window);
 
 		window.clear();
-		UpdateSnakePositionOnScreen(snake, window);
-		DrawSnakeTail(window, snake);
-		window.draw(apple.appleShape); //drawing apple here will make it a funtion later
-		window.draw(gridLines);
+		DrawGame(game, window);
+		window.draw(gridLines); //once again, for visual reference
 		window.display();
 	}
 

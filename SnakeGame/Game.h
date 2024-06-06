@@ -1,8 +1,8 @@
 #pragma once
-#include <SFML/Graphics.hpp>
 #include "Constants.h"
 #include "Snake.h"
 #include "Apple.h"
+#include "Math.h"
 
 namespace SnakeGame
 {
@@ -24,18 +24,15 @@ namespace SnakeGame
 	
 	struct Game
 	{
-		//Snake snake; // I have some problems with this part probably use it somewhere else and have a naming issue
+		Snake snake; // I have some problems with this part probably use it somewhere else and have a naming issu
 		Apple apple;
 		Grid grid;
 	};
 
 	void InitGrid(Grid& grid);
-	/*void InitGame(Game& game)
-	{
-		InitGrid(game.grid);
-		InitSnake(game.snake);
-	}*/
-	
+	void InitGame(Game& game);
+	void UpdateGame(Game& game, sf::RenderWindow& window);
+	void DrawGame(Game& game, sf::RenderWindow& window);
 }
 
 
