@@ -1,6 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <random>
 #include "Constants.h"
 
 namespace SnakeGame
@@ -9,10 +8,11 @@ namespace SnakeGame
 	{
 		float x = 0;
 		float y = 0;
-		sf::RectangleShape appleShape;
+		sf::Sprite appleSprite;
 	};
 
 
 	void InitApple(Apple& apple);
 	void SetRandomPositionForApple(Apple& apple);
+	void DrawApple(Apple& apple, sf::RenderWindow& window);
 }

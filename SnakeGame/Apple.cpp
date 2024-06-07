@@ -6,10 +6,10 @@ namespace SnakeGame
 	{
 		SetRandomPositionForApple(apple);
 
-		//Init Apple Shape
-		apple.appleShape.setSize(sf::Vector2f(SNAKE_SIZE, SNAKE_SIZE));
-		apple.appleShape.setFillColor(sf::Color::Red);
-		apple.appleShape.setOrigin(SNAKE_SIZE / 2.f, SNAKE_SIZE / 2.f);
+		//Init Apple Sprite
+		apple.appleSprite.setTextureRect(sf::IntRect(48, 0, 8, 8));
+		apple.appleSprite.setScale(5, 5);
+		apple.appleSprite.setOrigin(SNAKE_SIZE / 10.f, SNAKE_SIZE / 10.f);
 
 	}
 
@@ -18,8 +18,11 @@ namespace SnakeGame
 		//Init Apple position on screen
 		apple.x = (rand() % GRID_CELLS_HORIZONTAL * GRID_SELL_SIZE) + GRID_SELL_SIZE / 2;
 		apple.y = (rand() % GRID_CELLS_VERTICAL * GRID_SELL_SIZE) + GRID_SELL_SIZE / 2;
-
-		apple.appleShape.setPosition(apple.x, apple.y);
+	}
+	void DrawApple(Apple& apple, sf::RenderWindow& window)
+	{
+		apple.appleSprite.setPosition(apple.x, apple.y);
+		window.draw(apple.appleSprite);
 	}
 }
 

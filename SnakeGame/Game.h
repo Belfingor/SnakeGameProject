@@ -7,6 +7,7 @@
 namespace SnakeGame
 {
 	// Init Grid
+	//--------------------------------------------------------------------------------
 	struct Cell
 	{
 		//Identify coordinates in cell system overall
@@ -20,14 +21,16 @@ namespace SnakeGame
 		float y;
 		Cell cell[GRID_CELLS_HORIZONTAL][GRID_CELLS_VERTICAL];
 	};
+	//--------------------------------------------------------------------------------
 
-	
 	struct Game
 	{
-		Snake snake; // I have some problems with this part probably use it somewhere else and have a naming issu
+		Snake snake;
 		Apple apple;
 		Grid grid;
+		sf::Texture tileSetTexture; //Loading tile set here as it is used for all sprites possible
 	};
+	//--------------------------------------------------------------------------------
 
 	void InitGrid(Grid& grid);
 	void InitGame(Game& game);

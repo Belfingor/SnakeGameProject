@@ -47,7 +47,7 @@ int main()
 		// Reduce framrate to not spam CPU and GPU
 		sf::sleep(sf::milliseconds(120));
 
-		//Calculate Delta Time
+		//Calculate Delta Time (didnt use it anywhere yet but may need in the future)
 		float currentTime = gameClock.getElapsedTime().asMicroseconds();
 		float deltaTime = currentTime - lastTime;
 		lastTime = currentTime;
@@ -71,8 +71,6 @@ int main()
 		window.draw(gridLines); //once again, for visual reference
 		window.display();
 	}
-
-
 	return 0;
 }
 

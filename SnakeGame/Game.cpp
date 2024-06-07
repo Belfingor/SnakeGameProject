@@ -20,12 +20,17 @@ namespace SnakeGame
 		InitGrid(game.grid);
 		InitSnake(game.snake);
 		InitApple(game.apple);
+
+		game.tileSetTexture.loadFromFile("Resources/SnakeTileSet.png");
+		game.snake.snakeHeadSprite.setTexture(game.tileSetTexture);
+		game.snake.tailSegment.snakeTailSprite.setTexture(game.tileSetTexture);
+		game.apple.appleSprite.setTexture(game.tileSetTexture);
+	
 	}
 	void UpdateGame(Game& game, sf::RenderWindow& window)
 	{
 		HandleInput(game.snake);
 		UpdateSnakeState(game.snake, game.apple);
-		UpdateSnakePositionOnScreen(game.snake);
 
 		//check for border collision
 		if (DidSnakeCollideWithWall(game.snake))
@@ -46,9 +51,8 @@ namespace SnakeGame
 	}
 	void DrawGame(Game& game, sf::RenderWindow& window)
 	{
-		window.draw(game.snake.snakeShape);
-		DrawSnakeTail(window, game.snake);
-		window.draw(game.apple.appleShape);
+		DrawSnake(game.snake, window);
+		DrawApple(game.apple, window);
 	}
 }
 

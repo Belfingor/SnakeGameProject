@@ -9,7 +9,7 @@ namespace SnakeGame
 	const int GRID_SELL_SIZE = SCREEN_HEIGHT / GRID_CELLS_VERTICAL; 
 
 	const int SNAKE_SIZE = GRID_SELL_SIZE;
-	const int SNAKE_SPEED = 40.f;
+	const int SNAKE_SPEED = GRID_SELL_SIZE; //snake's speed is one cell per frame
 	const int NUM_TAILS = 3;
 }
 
