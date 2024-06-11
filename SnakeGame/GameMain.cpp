@@ -13,18 +13,20 @@ int main()
 
 	// Init Window
 	sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Snake Game");
-
-	// Init Game Clock
-	sf::Clock gameClock;
-	float lastTime = gameClock.getElapsedTime().asSeconds();
+	// Reduce framrate to not spam CPU and GPU and keep game consistent on any PC
+	window.setFramerateLimit(60);
+	
 	//--------------------------------------------------------------------------------
 
 	// Game Initiation
 	Game game;
 	InitGame(game);
 
+	// Init Game Clock
+	sf::Clock gameClock;
+	float lastTime = gameClock.getElapsedTime().asSeconds();
+
 	//--------------------------------------------------------------------------------
-	// Lets try to draw my grid here
 	// Here I Basically drow the grid for visual reference. Will be deleted in final
 	sf::VertexArray gridLines(sf::Lines);
 
@@ -41,12 +43,10 @@ int main()
 	}
 	//--------------------------------------------------------------------------------
 
+
 	//Main loop
 	while (window.isOpen())
 	{
-		// Reduce framrate to not spam CPU and GPU
-		sf::sleep(sf::milliseconds(120));
-
 		//Calculate Delta Time (didnt use it anywhere yet but may need in the future)
 		float currentTime = gameClock.getElapsedTime().asMicroseconds();
 		float deltaTime = currentTime - lastTime;
@@ -58,17 +58,12 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 		}
-		/*if (DoSnakeAndCellCoordinatesMatch(snake))        //GONNA TRY WITHOUT IT
-		{
-			snake.snakeDirection = snake.desiredDirection;
-		}*/
-
 
 		UpdateGame(game, window);
-
+		
 		window.clear();
 		DrawGame(game, window);
-		window.draw(gridLines); //once again, for visual reference
+		window.draw(gridLines); //drawing grid lines that are used for visual reference
 		window.display();
 	}
 	return 0;

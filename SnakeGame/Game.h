@@ -37,9 +37,3 @@ namespace SnakeGame
 	void UpdateGame(Game& game, sf::RenderWindow& window);
 	void DrawGame(Game& game, sf::RenderWindow& window);
 }
-
-
-
-
-// here we gonna return TRUE only if snake's head is fully in cell
-//bool DoSnakeAndCellCoordinatesMatch(Snake& snake);       //GONNA TRY WITHOUT IT

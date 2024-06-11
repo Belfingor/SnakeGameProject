@@ -24,4 +24,13 @@ namespace SnakeGame
 		}
 		return false;
 	}
+
+	// here we gonna return TRUE only if snake's head is fully in cell
+	bool DoSnakeAndCellCoordinatesMatch(Snake& snake)
+	{
+		return (static_cast<int>(snake.snakeX) % (SCREEN_WIDTH / GRID_CELLS_HORIZONTAL) - GRID_SELL_SIZE / 2 == 0) //use static_cast to convert float to int
+			&& (static_cast<int>(snake.snakeY) % (SCREEN_HEIGHT / GRID_CELLS_VERTICAL) - GRID_SELL_SIZE / 2 == 0);
+	}
+	
+
 }
