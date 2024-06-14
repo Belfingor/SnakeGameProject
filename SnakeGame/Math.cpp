@@ -1,36 +1,32 @@
 #include "Math.h"
+#include "Snake.h"
+#include "Apple.h"
 
 namespace SnakeGame 
 {
-	bool DidSnakeCollideWithWall(Snake& snake)
+	bool DoShapesCollide(const Rectangle& rectangle1, const Rectangle& rectangle2)
 	{
-		return (snake.snakeX + SNAKE_SIZE / 2 > SCREEN_WIDTH || snake.snakeX - SNAKE_SIZE / 2 < 0 ||
-			snake.snakeY + SNAKE_SIZE / 2 > SCREEN_HEIGHT || snake.snakeY - SNAKE_SIZE / 2 < 0);
+		return rectangle1.position.x < rectangle2.position.x + rectangle2.size.x &&
+			rectangle1.position.x + rectangle1.size.x > rectangle2.position.x &&
+			rectangle1.position.y < rectangle2.position.y + rectangle2.size.y &&
+			rectangle1.position.y + rectangle1.size.y > rectangle2.position.y;
 	}
 
-	bool DidSnakeCollideWithApple(Snake& snake, Apple& apple)
+	bool DidSnakeCollideWithWall(Snake& snake)
 	{
-		return (snake.snakeX == apple.x && snake.snakeY == apple.y);
+		return (snake.position.x + SNAKE_SIZE / 2 > SCREEN_WIDTH || snake.position.x - SNAKE_SIZE / 2 < 0 ||
+			snake.position.y + SNAKE_SIZE / 2 > SCREEN_HEIGHT || snake.position.y - SNAKE_SIZE / 2 < 0);
 	}
 
 	bool DidSnakeCollideWithTail(Snake& snake)
 	{
 		for (const auto& segment : snake.tail)
 		{
-			if (snake.snakeX == segment.tailX && snake.snakeY == segment.tailY)
+			if (snake.position.x == segment.position.x && snake.position.y == segment.position.y)
 			{
 				return true;
 			}
 		}
 		return false;
 	}
-
-	// here we gonna return TRUE only if snake's head is fully in cell
-	bool DoSnakeAndCellCoordinatesMatch(Snake& snake)
-	{
-		return (static_cast<int>(snake.snakeX) % (SCREEN_WIDTH / GRID_CELLS_HORIZONTAL) - GRID_SELL_SIZE / 2 == 0) //use static_cast to convert float to int
-			&& (static_cast<int>(snake.snakeY) % (SCREEN_HEIGHT / GRID_CELLS_VERTICAL) - GRID_SELL_SIZE / 2 == 0);
-	}
-	
-
 }

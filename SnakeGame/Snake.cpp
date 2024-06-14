@@ -1,15 +1,16 @@
 #include "Snake.h"
-#include "Math.h"
 #include <vector>
+
+
 
 namespace SnakeGame
 {
 	void InitSnake(Snake& snake)
 	{
 		// Starting coordinates for snake
-		snake.snakeX = SCREEN_WIDTH / 2.f - 20.f;
-		snake.snakeY = SCREEN_HEIGHT / 2.f;
-		snake.snakeSpeed = SNAKE_SPEED;
+		snake.position.x = SCREEN_WIDTH / 2.f - 20.f;
+		snake.position.y = SCREEN_HEIGHT / 2.f;
+		snake.snakeSpeed = SNAKE_MOVEMENT_PER_FRAME;
 		snake.snakeDirection = 0;
 
 		// Init SnakeHeadSprite here
@@ -30,8 +31,8 @@ namespace SnakeGame
 		for (int i = 0; i < NUM_TAILS; ++i)
 		{
 			// Init tail segment position
-			snake.tailSegment.tailX = snake.snakeX;
-			snake.tailSegment.tailY = snake.snakeY;
+			snake.tailSegment.position.x = snake.position.x - GRID_SELL_SIZE;
+			snake.tailSegment.position.y = snake.position.y;
 
 			snake.tail.push_back(snake.tailSegment); // Add the tail segment to the snake's tail vector
 		}
@@ -42,17 +43,17 @@ namespace SnakeGame
 		// Update position of each segment to follow the previous segment (I mean "next" segment hehe)
   		for (size_t i = snake.tail.size() - 1; i > 0; --i)
 		{
-			snake.tail[i].tailX = snake.tail[i - 1].tailX;
-			snake.tail[i].tailY = snake.tail[i - 1].tailY;
-			snake.tail[i].snakeTailSprite.setPosition(snake.tail[i].tailX, snake.tail[i].tailY);
+			snake.tail[i].position.x = snake.tail[i - 1].position.x;
+			snake.tail[i].position.y = snake.tail[i - 1].position.y;
+			snake.tail[i].snakeTailSprite.setPosition(snake.tail[i].position.x, snake.tail[i].position.y);
 		}
 
 		// Update first segment to follow snake's head
 		if (!snake.tail.empty())
 		{
-			snake.tail[0].tailX = snake.tailLeashX ;
-			snake.tail[0].tailY = snake.tailLeashY;
-			snake.tail[0].snakeTailSprite.setPosition(snake.tail[0].tailX, snake.tail[0].tailY);
+			snake.tail[0].position.x = snake.tailLeashX ;
+			snake.tail[0].position.y = snake.tailLeashY;
+			snake.tail[0].snakeTailSprite.setPosition(snake.tail[0].position.x, snake.tail[0].position.y);
 		}
 	}
 
@@ -60,74 +61,57 @@ namespace SnakeGame
 
 	void HandleInput(Snake& snake)
 	{
-		//Setting only desired direction so it can follow grid movement bla...
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && snake.snakeDirection != 2)
 		{
-			snake.desiredDirection = 0;
+			snake.snakeDirection = 0;
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && snake.snakeDirection != 3)
 		{
-			snake.desiredDirection = 1;
+			snake.snakeDirection = 1;
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && snake.snakeDirection != 0)
 		{
-			snake.desiredDirection = 2;
+			snake.snakeDirection = 2;
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && snake.snakeDirection != 1)
 		{
-			snake.desiredDirection = 3;
+			snake.snakeDirection = 3;
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) //THIS IS FOR TESTING PURPOSES WILL BE DELETED LATER
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) // THIS IS FOR TESTING PURPOSES WILL BE DELETED LATER
 		{
 			snake.tail.push_back(snake.tailSegment);
 		}
 
 	}
 
-	void UpdateSnakeState(Snake& snake, Apple& apple) //include Apple only because of the apple collision function (will move it later(maybe))
+	void UpdateSnakeState(Snake& snake) // Include Apple only because of the apple collision function (will move it later(maybe))
 	{
+		snake.tailLeashX = snake.position.x;
+		snake.tailLeashY = snake.position.y;
+	
 		if (snake.snakeDirection == 0) // Right
 		{
-			snake.tailLeashX = snake.snakeX;
-			snake.tailLeashY = snake.snakeY;
-			snake.snakeX = snake.snakeX + snake.snakeSpeed;
+			snake.position.x = snake.position.x + snake.snakeSpeed;
 			snake.snakeHeadSprite.setTextureRect(sf::IntRect(32, 63, 8, 8));
-			ChangeSnakeDirection(snake);
 		}
 		else if (snake.snakeDirection == 1) // Up
 		{
-			snake.tailLeashY = snake.snakeY;
-			snake.tailLeashX = snake.snakeX;
-			snake.snakeY = snake.snakeY - snake.snakeSpeed;
+			snake.position.y = snake.position.y - snake.snakeSpeed;
 			snake.snakeHeadSprite.setTextureRect(sf::IntRect(8, 63, 8, 8));
-			ChangeSnakeDirection(snake);
 		}
 		else if (snake.snakeDirection == 2) // Left
 		{
-			snake.tailLeashX = snake.snakeX;
-			snake.tailLeashY = snake.snakeY;
-			snake.snakeX = snake.snakeX - snake.snakeSpeed;
+			snake.position.x = snake.position.x - snake.snakeSpeed;
 			snake.snakeHeadSprite.setTextureRect(sf::IntRect(16, 63, 8, 8));
-			ChangeSnakeDirection(snake);
 		}
 		else if (snake.snakeDirection == 3) // Down
 		{
-			snake.tailLeashY = snake.snakeY;
-			snake.tailLeashX = snake.snakeX;
-			snake.snakeY = snake.snakeY + snake.snakeSpeed;
+			snake.position.y = snake.position.y + snake.snakeSpeed;
 			snake.snakeHeadSprite.setTextureRect(sf::IntRect(24, 63, 8, 8));
-			ChangeSnakeDirection(snake);
 		}
 
-		if (DidSnakeCollideWithApple(snake, apple)) //checking here if snake collided with apple
-		{
-			snake.tail.push_back(snake.tailSegment);
-		}
-
-		
-
-		UpdateSnakeTail(snake); //going to update tail state here as well
-		snake.snakeHeadSprite.setPosition(snake.snakeX, snake.snakeY);
+		UpdateSnakeTail(snake); // Going to update tail state here as well
+		snake.snakeHeadSprite.setPosition(snake.position.x, snake.position.y);
 		
 	}
 
@@ -139,13 +123,19 @@ namespace SnakeGame
  		}
 		window.draw(snake.snakeHeadSprite);
 	}
-
-	void ChangeSnakeDirection(Snake& snake)
+	Rectangle GetSnakeHeadCollider(const Snake& snake)
 	{
-		if (DoSnakeAndCellCoordinatesMatch(snake))    // To adjust Grid movement
+		return { { snake.position.x - SNAKE_SIZE / 2.f, snake.position.y - SNAKE_SIZE / 2.f },
+			{ SNAKE_SIZE, SNAKE_SIZE } };
+	}
+	std::vector<Rectangle> GetSnakeTailCollider(const Snake& snake)
+	{
+		std::vector<Rectangle> colliders;
+		for (const auto& segment : snake.tail)
 		{
-			snake.snakeDirection = snake.desiredDirection;
+			colliders.push_back({ segment.position.x - SNAKE_SIZE / 2.f, segment.position.y - SNAKE_SIZE / 2.f, SNAKE_SIZE, SNAKE_SIZE });
 		}
+		return colliders;
 	}
 }
 

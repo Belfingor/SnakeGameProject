@@ -1,5 +1,5 @@
 #include "Game.h"
-#include <SFML/Graphics.hpp>
+#include <vector>
 
 
 namespace SnakeGame
@@ -29,23 +29,33 @@ namespace SnakeGame
 	void UpdateGame(Game& game, sf::RenderWindow& window)
 	{
 		HandleInput(game.snake);
-		UpdateSnakeState(game.snake, game.apple);
+		UpdateSnakeState(game.snake);
 
-		//check for border collision
+		//-------------------------------------------------------------------------------- Data to use Collider function with tail 
+		Rectangle headCollider = GetSnakeHeadCollider(game.snake);
+		Rectangle appleCollider = GetAppleCollider(game.apple);
+		std::vector<Rectangle> tailColliders = GetSnakeTailCollider(game.snake);
+		//--------------------------------------------------------------------------------
+
+		if (DoShapesCollide(headCollider, appleCollider))
+		{
+			game.snake.tail.push_back(game.snake.tailSegment);
+			SetRandomPositionForApple(game.apple);
+			UpdateSnakeTail(game.snake); // Need to update snake tail here as well. Otherwise new tail segment spawns with coordinates (0,0) for one frame.
+		}
+		
+		for (const auto& tailCollider : tailColliders)
+		{
+			if (DoShapesCollide(headCollider, tailCollider))
+			{
+				window.close();
+				break;
+			}
+		}
+
 		if (DidSnakeCollideWithWall(game.snake))
 		{
 			window.close();
-		}
-
-		if (DidSnakeCollideWithTail(game.snake))
-		{
-			window.close();
-		}
-
-		//check if apple is eaten
-		if (DidSnakeCollideWithApple(game.snake, game.apple))
-		{
-			SetRandomPositionForApple(game.apple);
 		}
 	}
 	void DrawGame(Game& game, sf::RenderWindow& window)

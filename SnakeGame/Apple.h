@@ -1,13 +1,14 @@
 #pragma once
+#include "Math.h"
 #include <SFML/Graphics.hpp>
 #include "Constants.h"
+
 
 namespace SnakeGame
 {
 	struct Apple
 	{
-		float x = 0;
-		float y = 0;
+		Position2D position;
 		sf::Sprite appleSprite;
 	};
 
@@ -15,4 +16,5 @@ namespace SnakeGame
 	void InitApple(Apple& apple);
 	void SetRandomPositionForApple(Apple& apple);
 	void DrawApple(Apple& apple, sf::RenderWindow& window);
+	Rectangle GetAppleCollider(const Apple& apple);
 }
