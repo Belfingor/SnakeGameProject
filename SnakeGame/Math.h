@@ -9,6 +9,11 @@ namespace SnakeGame
 	{
 		float x = 0;
 		float y = 0;
+
+		bool operator==(const Vector2D& other) const
+		{
+			return x == other.x && y == other.y;
+		}
 	};
 
 	typedef Vector2D Position2D;
@@ -20,7 +25,6 @@ namespace SnakeGame
 	};
 
 	bool DoShapesCollide(const Rectangle& rectangle1, const Rectangle& rectangle2);
-
 	bool DidSnakeCollideWithWall(Snake& snake);
 	bool DidSnakeCollideWithTail(Snake& snake);
 }

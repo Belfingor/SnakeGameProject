@@ -12,7 +12,6 @@ namespace SnakeGame
 		sf::Sprite appleSprite;
 	};
 
-
 	void InitApple(Apple& apple);
 	void SetRandomPositionForApple(Apple& apple);
 	void DrawApple(Apple& apple, sf::RenderWindow& window);

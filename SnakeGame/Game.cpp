@@ -4,17 +4,6 @@
 
 namespace SnakeGame
 {
-	void InitGrid(Grid& grid) //Grid for game logic to spawn apples on it and determine snake's movement accordingly
-	{
-		for (int i = 0; i < GRID_CELLS_HORIZONTAL; ++i)
-		{
-			for (int j = 0; j < GRID_CELLS_VERTICAL; ++j)
-			{
-				grid.cell[i][j].x = i * (SCREEN_WIDTH / GRID_CELLS_HORIZONTAL); //X coordinate of cell on screen
-				grid.cell[i][j].y = i * (SCREEN_HEIGHT / GRID_CELLS_VERTICAL); //Y coordinate of cell on screen
-			}
-		}
-	}
 	void InitGame(Game& game)
 	{
 		game.tileSetTexture.loadFromFile("Resources/SnakeTileSet.png");
@@ -22,7 +11,8 @@ namespace SnakeGame
 		game.snake.tailSegment.snakeTailSprite.setTexture(game.tileSetTexture);
 		game.apple.appleSprite.setTexture(game.tileSetTexture);
 
-		InitGrid(game.grid);
+		//InitGrid(game);
+		game.grid.InitGrid();
 		InitSnake(game.snake);
 		InitApple(game.apple);
 	}
@@ -31,16 +21,16 @@ namespace SnakeGame
 		HandleInput(game.snake);
 		UpdateSnakeState(game.snake);
 
-		//-------------------------------------------------------------------------------- Data to use Collider function with tail 
+		//Data to use Collider function with tail 
 		Rectangle headCollider = GetSnakeHeadCollider(game.snake);
 		Rectangle appleCollider = GetAppleCollider(game.apple);
 		std::vector<Rectangle> tailColliders = GetSnakeTailCollider(game.snake);
-		//--------------------------------------------------------------------------------
+		
 
 		if (DoShapesCollide(headCollider, appleCollider))
 		{
+			RespawnAppleInAvailableCell(game);
 			game.snake.tail.push_back(game.snake.tailSegment);
-			SetRandomPositionForApple(game.apple);
 			UpdateSnakeTail(game.snake); // Need to update snake tail here as well. Otherwise new tail segment spawns with coordinates (0,0) for one frame.
 		}
 		
@@ -62,6 +52,36 @@ namespace SnakeGame
 	{
 		DrawSnake(game.snake, window);
 		DrawApple(game.apple, window);
+	}
+
+	void RespawnAppleInAvailableCell(Game& game)
+	{
+		MarkUnavailableCells(game);
+		game.grid.GetAvailableCells();
+		game.apple.position = game.grid.GetRandomAvailableCell();
+		game.apple.position.x = game.apple.position.x * GRID_CELL_SIZE + 20;
+		game.apple.position.y = game.apple.position.y * GRID_CELL_SIZE + 20;
+	}
+
+	void MarkUnavailableCells(Game& game)
+	{
+		for (int i = 1; i < GRID_CELLS_HORIZONTAL; ++i)
+		{
+			for (int j = 0; j < GRID_CELLS_VERTICAL; ++j)
+			{
+				if (game.snake.position == game.grid.GetCellCoordinatesOnScreen(i, j))
+				{
+					game.grid.cell[i][j].isAvailable = false;
+				}
+				for (const auto& segment : game.snake.tail)
+				{
+					if (segment.position == game.grid.GetCellCoordinatesOnScreen(i, j))
+					{
+						game.grid.cell[i][j].isAvailable = false;
+					}
+				}
+			}
+		}
 	}
 }
 

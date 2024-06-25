@@ -1,5 +1,4 @@
 ﻿#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
 #include "Game.h"
 
 using namespace SnakeGame;

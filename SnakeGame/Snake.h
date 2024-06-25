@@ -4,6 +4,7 @@
 #include "Constants.h"
 #include "Math.h"
 
+
 namespace SnakeGame
 {
 	// Init tail data. Have to declare it before snake struct so vector can use it
@@ -29,10 +30,8 @@ namespace SnakeGame
 	};
 
 	void InitSnake(Snake& snake);
-	//-------------------------------------------------------------------------------- snake's tail functions 
 	void InitSnakeTail(Snake& snake);
 	void UpdateSnakeTail(Snake& snake);
-	//--------------------------------------------------------------------------------
 	void HandleInput(Snake& snake);
 	void UpdateSnakeState(Snake& snake);
 	void DrawSnake(Snake& snake, sf::RenderWindow& window);

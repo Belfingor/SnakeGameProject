@@ -2,7 +2,6 @@
 #include <vector>
 
 
-
 namespace SnakeGame
 {
 	void InitSnake(Snake& snake)
@@ -31,7 +30,7 @@ namespace SnakeGame
 		for (int i = 0; i < NUM_TAILS; ++i)
 		{
 			// Init tail segment position
-			snake.tailSegment.position.x = snake.position.x - GRID_SELL_SIZE;
+			snake.tailSegment.position.x = snake.position.x - GRID_CELL_SIZE;
 			snake.tailSegment.position.y = snake.position.y;
 
 			snake.tail.push_back(snake.tailSegment); // Add the tail segment to the snake's tail vector
@@ -40,7 +39,7 @@ namespace SnakeGame
 
 	void UpdateSnakeTail(Snake& snake)
 	{
-		// Update position of each segment to follow the previous segment (I mean "next" segment hehe)
+		// Update position of each segment to follow the previous segment (a segment in front of it)
   		for (size_t i = snake.tail.size() - 1; i > 0; --i)
 		{
 			snake.tail[i].position.x = snake.tail[i - 1].position.x;
@@ -84,7 +83,7 @@ namespace SnakeGame
 
 	}
 
-	void UpdateSnakeState(Snake& snake) // Include Apple only because of the apple collision function (will move it later(maybe))
+	void UpdateSnakeState(Snake& snake)
 	{
 		snake.tailLeashX = snake.position.x;
 		snake.tailLeashY = snake.position.y;
@@ -111,8 +110,7 @@ namespace SnakeGame
 		}
 
 		UpdateSnakeTail(snake); // Going to update tail state here as well
-		snake.snakeHeadSprite.setPosition(snake.position.x, snake.position.y);
-		
+		snake.snakeHeadSprite.setPosition(snake.position.x, snake.position.y); 
 	}
 
 	void DrawSnake(Snake& snake, sf::RenderWindow& window)
@@ -123,11 +121,13 @@ namespace SnakeGame
  		}
 		window.draw(snake.snakeHeadSprite);
 	}
+
 	Rectangle GetSnakeHeadCollider(const Snake& snake)
 	{
 		return { { snake.position.x - SNAKE_SIZE / 2.f, snake.position.y - SNAKE_SIZE / 2.f },
 			{ SNAKE_SIZE, SNAKE_SIZE } };
 	}
+
 	std::vector<Rectangle> GetSnakeTailCollider(const Snake& snake)
 	{
 		std::vector<Rectangle> colliders;

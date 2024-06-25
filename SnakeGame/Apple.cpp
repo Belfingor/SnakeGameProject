@@ -16,9 +16,9 @@ namespace SnakeGame
 
 	void SetRandomPositionForApple(Apple& apple)
 	{
-		// Init Apple position on screen
-		apple.position.x = (rand() % GRID_CELLS_HORIZONTAL * GRID_SELL_SIZE) + GRID_SELL_SIZE / 2;
-		apple.position.y = (rand() % GRID_CELLS_VERTICAL * GRID_SELL_SIZE) + GRID_SELL_SIZE / 2;
+		// Init Apple position on screen (only when game starts, different function will be used for position change)
+		apple.position.x = (rand() % GRID_CELLS_HORIZONTAL * GRID_CELL_SIZE) + GRID_CELL_SIZE / 2;
+		apple.position.y = (rand() % GRID_CELLS_VERTICAL * GRID_CELL_SIZE) + GRID_CELL_SIZE / 2;
 	}
 	void DrawApple(Apple& apple, sf::RenderWindow& window)
 	{
