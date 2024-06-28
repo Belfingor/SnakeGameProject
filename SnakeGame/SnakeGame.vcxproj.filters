@@ -22,6 +22,18 @@
     <ClCompile Include="Math.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="GameStatePlaying.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStateGameOver.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStateMainMenu.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h">
@@ -37,6 +49,18 @@
       <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="Math.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStatePlaying.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateGameOver.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateMainMenu.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
       <Filter>Sources</Filter>
     </ClInclude>
   </ItemGroup>

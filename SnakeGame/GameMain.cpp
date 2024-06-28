@@ -1,4 +1,5 @@
 ﻿#include <SFML/Graphics.hpp>
+#include "Constants.h"
 #include "Game.h"
 
 using namespace SnakeGame;
@@ -9,12 +10,12 @@ int main()
 	int seed = (int)time(nullptr);
 	srand(seed);
 
-	sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Snake Game");
-	window.setFramerateLimit(10); // Reduce framrate to not spam CPU and GPU and keep game consistent on any PC
+	sf::RenderWindow window(sf::VideoMode(SnakeGame::SCREEN_WIDTH, SnakeGame::SCREEN_HEIGHT), "Snake Game");
+	window.setFramerateLimit(11); // Reduce framrate to not spam CPU and GPU and keep game consistent on any PC
 	
 	//--------------------------------------------------------------------------------
-	Game game;
-	InitGame(game);
+	SnakeGame::Game* game = new SnakeGame::Game();
+	InitGame(*game);
 
 	// Init Game Clock
 	sf::Clock gameClock;
@@ -44,24 +45,28 @@ int main()
 		float deltaTime = currentTime - lastTime;
 		lastTime = currentTime;
 
-		sf::Event event;
-		while (window.pollEvent(event))
+		HandleWindowEvents(*game, window);
+
+		if (!window.isOpen())
 		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) // TEMPORARY
-			{
-				window.close();
-			}
+			break;
 		}
 
-		UpdateGame(game, window);
-		
-		window.clear();
-		DrawGame(game, window);
-		window.draw(gridLines); // Drawing grid lines that are used for visual reference
-		window.display();
+		if (UpdateGame(*game, deltaTime))
+		{
+			window.clear();
+			DrawGame(*game, window);
+			window.display();
+		}
+		else
+		{
+			window.close();
+		}
 	}
+	DeinitializeGame(*game);
+	delete game;
+	game = nullptr;
+	//window.draw(gridLines); // Drawing grid lines that are used for visual reference
 	return 0;
 }
 

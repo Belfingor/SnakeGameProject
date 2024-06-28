@@ -36,5 +36,6 @@ namespace SnakeGame
 	void UpdateSnakeState(Snake& snake);
 	void DrawSnake(Snake& snake, sf::RenderWindow& window);
 	Rectangle GetSnakeHeadCollider(const Snake& snake);
+	Rectangle GetScreenColloder();
 	std::vector<Rectangle> GetSnakeTailCollider(const Snake& snake);
 }

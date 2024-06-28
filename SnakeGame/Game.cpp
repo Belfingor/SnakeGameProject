@@ -1,98 +1,249 @@
 #include "Game.h"
-#include <vector>
+#include <cassert>
+
+#include "GameStatePlaying.h"
+#include "GameStateMainMenu.h"
+//include other gamestate headers here
 
 
 namespace SnakeGame
 {
+//--------------------------------------------------------//GAME STATE STACK LOGIC//
+	void PushGameState(Game& game, GameStateType& stateType, bool isExclusivelyVisible)
+	{
+		game.pendingGameStateType = stateType;
+		game.isPendingGameStateExclusivelyVisible = isExclusivelyVisible;
+		game.gameStateChangeType = GameStateChangeType::Push;
+	}
+
+	void PopGameState(Game& game)
+	{
+		game.pendingGameStateType = GameStateType::None;
+		game.isPendingGameStateExclusivelyVisible = false;
+		game.gameStateChangeType = GameStateChangeType::Pop;
+	}
+
+	void SwitchGameState(Game& game, GameStateType newState)
+	{
+		game.pendingGameStateType = newState;
+		game.isPendingGameStateExclusivelyVisible = false;
+		game.gameStateChangeType = GameStateChangeType::Switch;
+	}
+//--------------------------------------------------------------------------------
+	bool UpdateGame(Game& game, float deltaTime)
+	{
+		if (game.gameStateChangeType == GameStateChangeType::Switch)
+		{
+			while (game.gameStateStack.size() > 0)
+			{
+				ShutDownGameState(game, game.gameStateStack.back());
+				game.gameStateStack.pop_back();
+			}
+		}
+		else if (game.gameStateChangeType == GameStateChangeType::Pop)
+		{
+			if (game.gameStateStack.size() > 0)
+			{
+				ShutDownGameState(game, game.gameStateStack.back());
+				game.gameStateStack.pop_back();
+			}
+		}
+		if (game.pendingGameStateType != GameStateType::None)
+		{
+			game.gameStateStack.push_back({ game.pendingGameStateType, nullptr, game.isPendingGameStateExclusivelyVisible });
+			InitGameState(game, game.gameStateStack.back());
+		}
+
+		game.gameStateChangeType = GameStateChangeType::None;
+		game.pendingGameStateType = GameStateType::None;
+		game.isPendingGameStateExclusivelyVisible = false;
+
+		if (game.gameStateStack.size() > 0)
+		{
+			UpdateGameState(game, game.gameStateStack.back(), deltaTime);
+			return true;
+		}
+		return false;
+	}
+
+	void DrawGame(Game& game, sf::RenderWindow& window)
+	{
+		if (game.gameStateStack.size() > 0)
+		{
+			std::vector<GameState*> visibleGameStates;
+			for (auto it = game.gameStateStack.rbegin(); it != game.gameStateStack.rend(); ++it)
+			{
+				visibleGameStates.push_back(&(*it));
+				if (it->isExclusivelyVisible)
+				{
+					break;
+				}
+			}
+
+			for (auto it = visibleGameStates.rbegin(); it != visibleGameStates.rend(); ++it)
+			{
+				DrawGameState(game, **it, window);
+			}
+		}
+	}
+
+	void ShutDownGame(Game& game)
+	{
+		// ShutDown ALL game states
+		while (game.gameStateStack.size() > 0)
+		{
+			ShutDownGameState(game, game.gameStateStack.back());
+			game.gameStateStack.pop_back();
+		}
+
+		game.gameStateChangeType = GameStateChangeType::None;
+		game.pendingGameStateType = GameStateType::None;
+		game.isPendingGameStateExclusivelyVisible = false;
+	}
+
+	void InitGameState(Game& game, GameState& state)
+	{
+		switch (state.type)
+		{
+		case GameStateType::MainMenu:
+		{
+			state.data = new GameStateMainMenuData();
+			InitGameStateMainMenu(*(GameStateMainMenuData*)state.data, game);
+			break;
+		}
+		case GameStateType::Playing:
+		{
+			state.data = new GameStatePlayingData();
+			InitGameStatePlaying(*(GameStatePlayingData*)state.data, game);
+			break;
+		}
+		default:
+			assert(false); // To make sure every Game State was implemented
+			break;
+		}
+	}
+
+	void ShutDownGameState(Game& game, GameState& state)
+	{
+		switch (state.type)
+		{
+		case GameStateType::MainMenu:
+		{
+			ShutDownGameStateMainMenu(*(GameStateMainMenuData*)state.data, game);
+			delete (GameStateMainMenuData*)state.data;
+			break;
+		}
+		case GameStateType::Playing:
+		{
+			ShutDownGameStatePlaying(*(GameStatePlayingData*)state.data, game);
+			delete (GameStatePlayingData*)state.data;
+			break;
+		}
+		default:
+			assert(false);
+			break;
+		}
+	}
+
+	void HandleWindowEventGameState(Game& game, GameState& state, sf::Event& event)
+	{
+		switch (state.type)
+		{
+		case GameStateType::MainMenu:
+		{
+			HandleGameStateMainMenuWindowEvent(*(GameStateMainMenuData*)state.data, game, event);
+			break;
+		}
+		case GameStateType::Playing:
+		{
+			HandleGameStatePlayingWindowEvent(*(GameStatePlayingData*)state.data, game, event);
+			break;
+		}
+		default:
+			assert(false);
+			break;
+		}
+	}
+
+	void UpdateGameState(Game& game, GameState& state, float deltaTime) //check if i need delta time here later
+	{
+		switch (state.type)
+		{
+		case GameStateType::MainMenu:
+		{
+			UpdateGameStateMainMenu(*(GameStateMainMenuData*)state.data, game, deltaTime);
+			break;
+		}
+		case GameStateType::Playing:
+		{
+			UpdateGameStatePlaying(*(GameStatePlayingData*)state.data, game, deltaTime);
+			break;
+		}
+		default:
+			assert(false);
+			break;
+		}
+	}
+
+	void DrawGameState(Game& game, GameState& state, sf::RenderWindow& window)
+	{
+		switch (state.type)
+		{
+		case GameStateType::MainMenu:
+		{
+			DrawGameStateMainMenu(*(GameStateMainMenuData*)state.data, game, window);
+			break;
+		}
+		case GameStateType::Playing:
+		{
+			DrawGameStatePlaying(*(GameStatePlayingData*)state.data, game, window);
+			break;
+		}
+		default:
+			assert(false);
+			break;
+		}
+	}
+
 	void InitGame(Game& game)
 	{
-		game.tileSetTexture.loadFromFile("Resources/SnakeTileSet.png");
-		game.snake.snakeHeadSprite.setTexture(game.tileSetTexture);
-		game.snake.tailSegment.snakeTailSprite.setTexture(game.tileSetTexture);
-		game.apple.appleSprite.setTexture(game.tileSetTexture);
+		game.gameStateChangeType = GameStateChangeType::None;
+		game.pendingGameStateType = GameStateType::None;
+		game.isPendingGameStateExclusivelyVisible = false;
+		SwitchGameState(game, GameStateType::MainMenu);
 
-		//InitGrid(game);
-		game.grid.InitGrid();
-		InitSnake(game.snake);
-		InitApple(game.apple);
+		//determine background setting here maybe? but define background rectangle in game struct first
 	}
-	void UpdateGame(Game& game, sf::RenderWindow& window)
+
+	void HandleWindowEvents(Game& game, sf::RenderWindow& window)
 	{
-		HandleInput(game.snake);
-		UpdateSnakeState(game.snake);
-
-		//Data to use Collider function with tail 
-		Rectangle headCollider = GetSnakeHeadCollider(game.snake);
-		Rectangle appleCollider = GetAppleCollider(game.apple);
-		std::vector<Rectangle> tailColliders = GetSnakeTailCollider(game.snake);
-		
-
-		if (DoShapesCollide(headCollider, appleCollider))
+		// Read Events
+		sf::Event event;
+		while (window.pollEvent(event))
 		{
-			RespawnAppleInAvailableCell(game);
-			game.snake.tail.push_back(game.snake.tailSegment);
-			UpdateSnakeTail(game.snake); // Need to update snake tail here as well. Otherwise new tail segment spawns with coordinates (0,0) for one frame.
-		}
-		
-		for (const auto& tailCollider : tailColliders)
-		{
-			if (DoShapesCollide(headCollider, tailCollider))
+			if (event.type == sf::Event::Closed)
 			{
 				window.close();
 				break;
 			}
-		}
-
-		if (DidSnakeCollideWithWall(game.snake))
-		{
-			window.close();
-		}
-	}
-	void DrawGame(Game& game, sf::RenderWindow& window)
-	{
-		DrawSnake(game.snake, window);
-		DrawApple(game.apple, window);
-	}
-
-	void RespawnAppleInAvailableCell(Game& game)
-	{
-		MarkUnavailableCells(game);
-		game.grid.GetAvailableCells();
-		game.apple.position = game.grid.GetRandomAvailableCell();
-		game.apple.position.x = game.apple.position.x * GRID_CELL_SIZE + 20;
-		game.apple.position.y = game.apple.position.y * GRID_CELL_SIZE + 20;
-	}
-
-	void MarkUnavailableCells(Game& game)
-	{
-		for (int i = 1; i < GRID_CELLS_HORIZONTAL; ++i)
-		{
-			for (int j = 0; j < GRID_CELLS_VERTICAL; ++j)
+			if (game.gameStateStack.size() > 0)
 			{
-				if (game.snake.position == game.grid.GetCellCoordinatesOnScreen(i, j))
-				{
-					game.grid.cell[i][j].isAvailable = false;
-				}
-				for (const auto& segment : game.snake.tail)
-				{
-					if (segment.position == game.grid.GetCellCoordinatesOnScreen(i, j))
-					{
-						game.grid.cell[i][j].isAvailable = false;
-					}
-				}
+				HandleWindowEventGameState(game, game.gameStateStack.back(), event);
 			}
 		}
 	}
+
+	void DeinitializeGame(Game& game)
+	{
+		while (game.gameStateStack.size() > 0)
+		{
+			ShutDownGameState(game, game.gameStateStack.back());
+			game.gameStateStack.pop_back();
+		}
+
+		game.gameStateChangeType = GameStateChangeType::None;
+		game.pendingGameStateType = GameStateType::None;
+		game.isPendingGameStateExclusivelyVisible = false;
+	}
+
 }
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,10 +1,10 @@
 #pragma once
+#include <cstdlib>
+#include <SFML/Graphics.hpp>
+#include <vector>
 
 namespace SnakeGame
 {
-	struct Snake;
-	struct Apple;
-
 	struct Vector2D
 	{
 		float x = 0;
@@ -25,6 +25,24 @@ namespace SnakeGame
 	};
 
 	bool DoShapesCollide(const Rectangle& rectangle1, const Rectangle& rectangle2);
-	bool DidSnakeCollideWithWall(Snake& snake);
-	bool DidSnakeCollideWithTail(Snake& snake);
+
+	//--------------------------------------------------------------------------------
+
+	enum class Orientation
+	{
+		Horizontal = 0,
+		Vertical
+	};
+
+	enum class Alignment
+	{
+		Min, //Left or Top
+		Mid,
+		Max //Right or Top
+	};
+
+	sf::Vector2f GetItemOrigin(const sf::Text& text, const sf::Vector2f& relativePosition);
+	void DrawItemsList(sf::RenderWindow& window, const std::vector<sf::Text*>& items, float spacing, Orientation orientation, Alignment alignment, const sf::Vector2f& position, const sf::Vector2f& origin);
+	/*bool DidSnakeCollideWithWall(Snake& snake);
+	bool DidSnakeCollideWithTail(Snake& snake);*/
 }

@@ -30,7 +30,7 @@ namespace SnakeGame
 		for (int i = 0; i < NUM_TAILS; ++i)
 		{
 			// Init tail segment position
-			snake.tailSegment.position.x = snake.position.x - GRID_CELL_SIZE;
+			snake.tailSegment.position.x = snake.position.x - TILE_SIZE;
 			snake.tailSegment.position.y = snake.position.y;
 
 			snake.tail.push_back(snake.tailSegment); // Add the tail segment to the snake's tail vector
@@ -126,6 +126,13 @@ namespace SnakeGame
 	{
 		return { { snake.position.x - SNAKE_SIZE / 2.f, snake.position.y - SNAKE_SIZE / 2.f },
 			{ SNAKE_SIZE, SNAKE_SIZE } };
+	}
+
+
+	// Getting screen collider here for snake_boarder collision
+	Rectangle GetScreenColloder()
+	{
+		return { {0.f, 0.f} ,{ SCREEN_WIDTH, SCREEN_HEIGHT } };
 	}
 
 	std::vector<Rectangle> GetSnakeTailCollider(const Snake& snake)

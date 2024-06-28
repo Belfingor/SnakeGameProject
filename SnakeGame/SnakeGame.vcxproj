@@ -161,6 +161,10 @@
     <ClCompile Include="Apple.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameMain.cpp" />
+    <ClCompile Include="GameStateGameOver.cpp" />
+    <ClCompile Include="GameStateMainMenu.cpp" />
+    <ClCompile Include="GameStatePlaying.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Snake.cpp" />
   </ItemGroup>
@@ -168,6 +172,10 @@
     <ClInclude Include="Apple.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameStateGameOver.h" />
+    <ClInclude Include="GameStateMainMenu.h" />
+    <ClInclude Include="GameStatePlaying.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Snake.h" />
   </ItemGroup>
