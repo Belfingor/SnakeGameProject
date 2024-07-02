@@ -78,7 +78,8 @@ namespace SnakeGame
 		sf::Font font;
 
 		int numApplesEaten = 0; // For counting scores
-
+		bool isFirstFrameOfPlayingState = true;
+		
 		//UI data
 		sf::Text ScoreCountText;
 	};

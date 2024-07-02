@@ -2,6 +2,7 @@
 #include <vector>
 
 
+
 namespace SnakeGame
 {
 	void InitSnake(Snake& snake)

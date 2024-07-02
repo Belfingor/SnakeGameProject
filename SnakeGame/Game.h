@@ -41,6 +41,8 @@ namespace SnakeGame
 		GameStateChangeType gameStateChangeType = GameStateChangeType::None;
 		GameStateType pendingGameStateType = GameStateType::None;
 		bool isPendingGameStateExclusivelyVisible = false;
+
+		bool isGameWon = false; // For identifying if game is lost or won;
 	};
 
 	//--------------------------------------------------------------------------------

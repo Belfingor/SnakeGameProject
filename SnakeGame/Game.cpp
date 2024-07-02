@@ -4,6 +4,7 @@
 #include "GameStatePlaying.h"
 #include "GameStateMainMenu.h"
 #include "GameStateExitDialog.h"
+#include "GameStateGameOver.h"
 //include other gamestate headers here
 
 
@@ -124,6 +125,12 @@ namespace SnakeGame
 			InitGameStateExitDialog(*(GameStateExitDialogData*)state.data, game);
 			break;
 		}
+		case GameStateType::GameOver:
+		{
+			state.data = new GameStateGameOverData();
+			InitGameStateGameOver(*(GameStateGameOverData*)state.data, game);
+			break;
+		}
 		default:
 			assert(false); // To make sure every Game State was implemented
 			break;
@@ -152,6 +159,12 @@ namespace SnakeGame
 			delete (GameStateExitDialogData*)state.data;
 			break;
 		}
+		case GameStateType::GameOver:
+		{
+			ShutDownGameStateGameOver(*(GameStateGameOverData*)state.data, game);
+			delete (GameStateGameOverData*)state.data;
+			break;
+		}
 		default:
 			assert(false);
 			break;
@@ -175,6 +188,11 @@ namespace SnakeGame
 		case GameStateType::ExitDialog:
 		{
 			HandleGameStateExitDialogWindowEvent(*(GameStateExitDialogData*)state.data, game, event);
+			break;
+		}
+		case GameStateType::GameOver:
+		{
+			HandleGameStateGameOverWindowEvent(*(GameStateGameOverData*)state.data, game, event);
 			break;
 		}
 		default:
@@ -202,6 +220,11 @@ namespace SnakeGame
 			UpdateGameStateExitDialog(*(GameStateExitDialogData*)state.data, game, deltaTime);
 			break;
 		}
+		case GameStateType::GameOver:
+		{
+			UpdateGameStateGameOver(*(GameStateGameOverData*)state.data, game, deltaTime);
+			break;
+		}
 		default:
 			assert(false);
 			break;
@@ -225,6 +248,11 @@ namespace SnakeGame
 		case GameStateType::ExitDialog:
 		{
 			DrawGameStateExitDialog(*(GameStateExitDialogData*)state.data, game, window);
+			break;
+		}
+		case GameStateType::GameOver:
+		{
+			DrawGameStateGameOver(*(GameStateGameOverData*)state.data, game, window);
 			break;
 		}
 		default:

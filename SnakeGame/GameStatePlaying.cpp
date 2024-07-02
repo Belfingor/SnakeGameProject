@@ -25,6 +25,8 @@ namespace SnakeGame
 		data.grid.InitGrid();
 		InitSnake(data.snake);
 		InitApple(data.apple);
+
+		game.isGameWon = false;
 	}
 	void UpdateGameStatePlaying(GameStatePlayingData& data, Game& game, float deltaTime)
 	{
@@ -49,19 +51,22 @@ namespace SnakeGame
 		{
 			if (DoShapesCollide(headCollider, tailCollider))
 			{
-				//CREATE PUSH GAME STATE LOGIC HERE
-				SwitchGameState(game, GameStateType::MainMenu);
+				PushGameState(game, GameStateType::GameOver, false);
 				break;
 			}
 		}
 
 		if (!DoShapesCollide(headCollider, screenCollider))
 		{
-			SwitchGameState(game, GameStateType::MainMenu);
-			//CREATE PUSH GAME STATE LOGIC HERE
+			PushGameState(game, GameStateType::GameOver, false);
 		}
 
 		data.ScoreCountText.setString("Score: " + std::to_string(data.numApplesEaten));
+
+		if (data.snake.tail.size() + 1 == 10) // 10 for testing now, will be == to total num of cell in final
+		{
+			game.isGameWon = true;
+		}
 	}
 
 	void RespawnAppleInAvailableCell(GameStatePlayingData& data)
@@ -100,11 +105,14 @@ namespace SnakeGame
 		{
 			if (event.key.code == sf::Keyboard::Escape)
 			{
-				//push to exit dialog
-				//SwitchGameState(game, GameStateType::ExitDialog);
 				PushGameState(game, GameStateType::ExitDialog, false);
 			}
 		}
+		if (data.isFirstFrameOfPlayingState)
+		{
+			sf::sleep(sf::seconds(2));
+		}
+		data.isFirstFrameOfPlayingState = false;
 	}
 
 	void DrawGameStatePlaying(GameStatePlayingData& data, Game& game, sf::RenderWindow& window)
@@ -112,9 +120,11 @@ namespace SnakeGame
 		DrawSnake(data.snake, window);
 		DrawApple(data.apple, window);
 		window.draw(data.ScoreCountText);
+		
 	}
 	void ShutDownGameStatePlaying(GameStatePlayingData& data, Game& game)
 	{
+		data.isFirstFrameOfPlayingState = true;
 		//nothing to deinit here yet
 	}
 }
