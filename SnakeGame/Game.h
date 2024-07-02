@@ -16,8 +16,8 @@ namespace SnakeGame
 		None = 0,
 		MainMenu,
 		Playing,
-		//GameOver,
-		//ExitDialog
+		ExitDialog,
+		GameOver		
 	};
 
 	struct GameState
@@ -44,7 +44,7 @@ namespace SnakeGame
 	};
 
 	//--------------------------------------------------------------------------------
-	void PushGameState(Game& game, GameStateType& stateType, bool isExclusivelyVisible);
+	void PushGameState(Game& game, GameStateType stateType, bool isExclusivelyVisible);
 	void PopGameState(Game& game);
 	void SwitchGameState(Game& game, GameStateType newState);
 	//--------------------------------------------------------------------------------

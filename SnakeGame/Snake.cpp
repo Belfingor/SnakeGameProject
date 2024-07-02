@@ -132,7 +132,7 @@ namespace SnakeGame
 	// Getting screen collider here for snake_boarder collision
 	Rectangle GetScreenColloder()
 	{
-		return { {0.f, 0.f} ,{ SCREEN_WIDTH, SCREEN_HEIGHT } };
+		return { {0.f, 0.f} ,{ SCREEN_WIDTH - TILE_SIZE + 1, SCREEN_HEIGHT - TILE_SIZE + 1} };
 	}
 
 	std::vector<Rectangle> GetSnakeTailCollider(const Snake& snake)

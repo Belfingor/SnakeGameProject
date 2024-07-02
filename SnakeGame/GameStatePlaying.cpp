@@ -101,7 +101,8 @@ namespace SnakeGame
 			if (event.key.code == sf::Keyboard::Escape)
 			{
 				//push to exit dialog
-				SwitchGameState(game, GameStateType::MainMenu);
+				//SwitchGameState(game, GameStateType::ExitDialog);
+				PushGameState(game, GameStateType::ExitDialog, false);
 			}
 		}
 	}

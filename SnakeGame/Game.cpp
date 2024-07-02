@@ -3,13 +3,14 @@
 
 #include "GameStatePlaying.h"
 #include "GameStateMainMenu.h"
+#include "GameStateExitDialog.h"
 //include other gamestate headers here
 
 
 namespace SnakeGame
 {
 //--------------------------------------------------------//GAME STATE STACK LOGIC//
-	void PushGameState(Game& game, GameStateType& stateType, bool isExclusivelyVisible)
+	void PushGameState(Game& game, GameStateType stateType, bool isExclusivelyVisible)
 	{
 		game.pendingGameStateType = stateType;
 		game.isPendingGameStateExclusivelyVisible = isExclusivelyVisible;
@@ -117,6 +118,12 @@ namespace SnakeGame
 			InitGameStatePlaying(*(GameStatePlayingData*)state.data, game);
 			break;
 		}
+		case GameStateType::ExitDialog:
+		{
+			state.data = new GameStateExitDialogData();
+			InitGameStateExitDialog(*(GameStateExitDialogData*)state.data, game);
+			break;
+		}
 		default:
 			assert(false); // To make sure every Game State was implemented
 			break;
@@ -139,6 +146,12 @@ namespace SnakeGame
 			delete (GameStatePlayingData*)state.data;
 			break;
 		}
+		case GameStateType::ExitDialog:
+		{
+			ShutDownGameStateExitDialog(*(GameStateExitDialogData*)state.data, game);
+			delete (GameStateExitDialogData*)state.data;
+			break;
+		}
 		default:
 			assert(false);
 			break;
@@ -157,6 +170,11 @@ namespace SnakeGame
 		case GameStateType::Playing:
 		{
 			HandleGameStatePlayingWindowEvent(*(GameStatePlayingData*)state.data, game, event);
+			break;
+		}
+		case GameStateType::ExitDialog:
+		{
+			HandleGameStateExitDialogWindowEvent(*(GameStateExitDialogData*)state.data, game, event);
 			break;
 		}
 		default:
@@ -179,6 +197,11 @@ namespace SnakeGame
 			UpdateGameStatePlaying(*(GameStatePlayingData*)state.data, game, deltaTime);
 			break;
 		}
+		case GameStateType::ExitDialog:
+		{
+			UpdateGameStateExitDialog(*(GameStateExitDialogData*)state.data, game, deltaTime);
+			break;
+		}
 		default:
 			assert(false);
 			break;
@@ -197,6 +220,11 @@ namespace SnakeGame
 		case GameStateType::Playing:
 		{
 			DrawGameStatePlaying(*(GameStatePlayingData*)state.data, game, window);
+			break;
+		}
+		case GameStateType::ExitDialog:
+		{
+			DrawGameStateExitDialog(*(GameStateExitDialogData*)state.data, game, window);
 			break;
 		}
 		default:
