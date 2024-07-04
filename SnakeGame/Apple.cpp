@@ -1,24 +1,16 @@
 #include "Apple.h"
 #include "Math.h"
+#include "GameStatePlaying.h"
 
 
 namespace SnakeGame
 {
 	void InitApple(Apple& apple)
 	{
-		SetRandomPositionForApple(apple);
-
 		// Init Apple Sprite
 		apple.appleSprite.setTextureRect(sf::IntRect(48, 0, 8, 8));
 		apple.appleSprite.setScale(5, 5);
 		apple.appleSprite.setOrigin(SNAKE_SIZE / 10.f, SNAKE_SIZE / 10.f);
-	}
-
-	void SetRandomPositionForApple(Apple& apple)
-	{
-		// Init Apple position on screen (only when game starts, different function will be used for position change)
-		apple.position.x = (rand() % GRID_CELLS_HORIZONTAL * TILE_SIZE) + TILE_SIZE / 2;
-		apple.position.y = (rand() % GRID_CELLS_VERTICAL * TILE_SIZE) + TILE_SIZE / 2;
 	}
 	void DrawApple(Apple& apple, sf::RenderWindow& window)
 	{

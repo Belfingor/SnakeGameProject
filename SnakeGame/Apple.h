@@ -13,7 +13,6 @@ namespace SnakeGame
 	};
 
 	void InitApple(Apple& apple);
-	void SetRandomPositionForApple(Apple& apple);
 	void DrawApple(Apple& apple, sf::RenderWindow& window);
 	Rectangle GetAppleCollider(const Apple& apple);
 }

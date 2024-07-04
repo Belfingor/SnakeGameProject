@@ -11,7 +11,7 @@ namespace SnakeGame
 		snake.position.x = SCREEN_WIDTH / 2.f - 20.f;
 		snake.position.y = SCREEN_HEIGHT / 2.f;
 		snake.snakeSpeed = SNAKE_MOVEMENT_PER_FRAME;
-		snake.snakeDirection = 0;
+		snake.direction = SnakeDirection::Right;
 
 		// Init SnakeHeadSprite here
 		snake.snakeHeadSprite.setTextureRect(sf::IntRect(8, 63, 8, 8));
@@ -19,6 +19,7 @@ namespace SnakeGame
 		snake.snakeHeadSprite.setOrigin(SNAKE_SIZE / 10.f, SNAKE_SIZE / 10.f); 
 
 		InitSnakeTail(snake);
+		UpdateSnakeState(snake); // Have to Update it here as well, so all sprite positions are in place
 	}
 
 	void InitSnakeTail(Snake& snake)
@@ -59,28 +60,30 @@ namespace SnakeGame
 
 
 
-	void HandleInput(Snake& snake)
+	void HandleInput(Snake& snake)// 0 - Right, 1 - Up, 2 - Left, 3 - Down. Will be enum class later
 	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && snake.snakeDirection != 2)
+		
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && snake.direction != SnakeDirection::Left)
 		{
-			snake.snakeDirection = 0;
+			snake.direction = SnakeDirection::Right;
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && snake.snakeDirection != 3)
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && snake.direction != SnakeDirection::Down)
 		{
-			snake.snakeDirection = 1;
+			snake.direction = SnakeDirection::Up;
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && snake.snakeDirection != 0)
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && snake.direction != SnakeDirection::Right)
 		{
-			snake.snakeDirection = 2;
+			snake.direction = SnakeDirection::Left;
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && snake.snakeDirection != 1)
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && snake.direction != SnakeDirection::Up)
 		{
-			snake.snakeDirection = 3;
+			snake.direction = SnakeDirection::Down;
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) // THIS IS FOR TESTING PURPOSES WILL BE DELETED LATER
 		{
 			snake.tail.push_back(snake.tailSegment);
 		}
+		
 
 	}
 
@@ -89,22 +92,22 @@ namespace SnakeGame
 		snake.tailLeashX = snake.position.x;
 		snake.tailLeashY = snake.position.y;
 	
-		if (snake.snakeDirection == 0) // Right
+		if (snake.direction == SnakeDirection::Right) // Right
 		{
 			snake.position.x = snake.position.x + snake.snakeSpeed;
 			snake.snakeHeadSprite.setTextureRect(sf::IntRect(32, 63, 8, 8));
 		}
-		else if (snake.snakeDirection == 1) // Up
+		else if (snake.direction == SnakeDirection::Up) // Up
 		{
 			snake.position.y = snake.position.y - snake.snakeSpeed;
 			snake.snakeHeadSprite.setTextureRect(sf::IntRect(8, 63, 8, 8));
 		}
-		else if (snake.snakeDirection == 2) // Left
+		else if (snake.direction == SnakeDirection::Left) // Left
 		{
 			snake.position.x = snake.position.x - snake.snakeSpeed;
 			snake.snakeHeadSprite.setTextureRect(sf::IntRect(16, 63, 8, 8));
 		}
-		else if (snake.snakeDirection == 3) // Down
+		else if (snake.direction == SnakeDirection::Down) // Down
 		{
 			snake.position.y = snake.position.y + snake.snakeSpeed;
 			snake.snakeHeadSprite.setTextureRect(sf::IntRect(24, 63, 8, 8));
@@ -133,7 +136,7 @@ namespace SnakeGame
 	// Getting screen collider here for snake_boarder collision
 	Rectangle GetScreenColloder()
 	{
-		return { {0.f, 0.f} ,{ SCREEN_WIDTH - TILE_SIZE + 1, SCREEN_HEIGHT - TILE_SIZE + 1} };
+		return { {TILE_SIZE, TILE_SIZE} ,{ SCREEN_WIDTH - TILE_SIZE*2, SCREEN_HEIGHT - TILE_SIZE*2} };
 	}
 
 	std::vector<Rectangle> GetSnakeTailCollider(const Snake& snake)

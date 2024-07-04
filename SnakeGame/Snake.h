@@ -7,6 +7,14 @@
 
 namespace SnakeGame
 {
+	enum class SnakeDirection
+	{
+		Right = 0,
+		Up,
+		Left,
+		Down
+	};
+
 	// Init tail data. Have to declare it before snake struct so vector can use it
 	struct SnakeTail
 	{
@@ -18,7 +26,7 @@ namespace SnakeGame
 	{
 		Position2D position;
 		float snakeSpeed = SNAKE_MOVEMENT_PER_FRAME;
-		int snakeDirection = 0; // 0 - Right, 1 - Up, 2 - Left, 3 - Down. Will be enum class later
+		SnakeDirection direction = SnakeDirection::Right;
 		SnakeTail tailSegment; // Include Tail data to snakes data to make it whole
 		std::vector<SnakeTail> tail;
 

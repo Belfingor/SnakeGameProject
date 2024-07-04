@@ -78,17 +78,19 @@ namespace SnakeGame
 		sf::Font font;
 
 		int numApplesEaten = 0; // For counting scores
-		bool isFirstFrameOfPlayingState = true;
+		float timeSinceGameStarted = 0;
 		
 		//UI data
-		sf::Text ScoreCountText;
+		sf::Text scoreCountText;
+		sf::Text countdownText;
 	};
 	//--------------------------------------------------------------------------------
 
 	void InitGameStatePlaying(GameStatePlayingData& data, Game& game);
 	void UpdateGameStatePlaying(GameStatePlayingData& data, Game& game, float deltaTime);
-	void RespawnAppleInAvailableCell(GameStatePlayingData& data);
+	void SpawnAppleInAvailableCell(GameStatePlayingData& data);
 	void MarkUnavailableCells(GameStatePlayingData& data);
+	void MarkWallCellsAsUnavailable(GameStatePlayingData& data);
 	void HandleGameStatePlayingWindowEvent(GameStatePlayingData& data, Game& game, const sf::Event& event); // TO BE COMPLETED WHEN STATE LOGIC IS DONE
 	void DrawGameStatePlaying(GameStatePlayingData& data, Game& game, sf::RenderWindow& window);
 	void ShutDownGameStatePlaying(GameStatePlayingData& data, Game& game);

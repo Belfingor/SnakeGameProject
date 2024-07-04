@@ -41,7 +41,7 @@ int main()
 	while (window.isOpen())
 	{
 		// Calculate Delta Time (didnt use it anywhere yet but may need in the future)
-		float currentTime = gameClock.getElapsedTime().asMicroseconds();
+		float currentTime = gameClock.getElapsedTime().asSeconds();
 		float deltaTime = currentTime - lastTime;
 		lastTime = currentTime;
 
