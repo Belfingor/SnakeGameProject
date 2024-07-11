@@ -16,6 +16,7 @@ namespace SnakeGame
 		// Identify coordinates in cell system overall
 		Position2D position;
 		bool isAvailable = true;
+		sf::RectangleShape wallSprite;
 	};
 	struct Grid
 	{
@@ -76,6 +77,7 @@ namespace SnakeGame
 		Grid grid;
 		sf::Texture tileSetTexture; // Loading tile set here as it is used for all sprites possible
 		sf::Font font;
+	
 
 		int numApplesEaten = 0; // For counting scores
 		float timeSinceGameStarted = 0;
@@ -83,6 +85,7 @@ namespace SnakeGame
 		//UI data
 		sf::Text scoreCountText;
 		sf::Text countdownText;
+		sf::Text playingInputClueText;
 	};
 	//--------------------------------------------------------------------------------
 

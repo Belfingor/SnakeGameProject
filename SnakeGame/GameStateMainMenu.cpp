@@ -17,6 +17,7 @@ namespace SnakeGame
 		data.menu.rootItem.childSpacing = 10.f;
 		data.menu.rootItem.children.push_back(&data.startGameItem);
 		// Insert more items here ---->
+		data.menu.rootItem.children.push_back(&data.settingsItem);
 		data.menu.rootItem.children.push_back(&data.exitGameItem);
 
 		data.startGameItem.text.setString("Start game");
@@ -44,13 +45,35 @@ namespace SnakeGame
 		data.noItem.text.setFont(data.font);
 		data.noItem.text.setCharacterSize(24);
 
+		data.settingsItem.text.setString("Settings");
+		data.settingsItem.text.setFont(data.font);
+		data.settingsItem.text.setCharacterSize(24);
+		data.settingsItem.hintText.setString("Game Settings");
+		data.settingsItem.hintText.setFont(data.font);
+		data.settingsItem.hintText.setCharacterSize(48);
+		data.settingsItem.hintText.setFillColor(sf::Color::Red);
+		data.settingsItem.childOrientation = Orientation::Vertical;
+		data.settingsItem.childAlignment = Alignment::Max;
+		data.settingsItem.childSpacing = 10.f;
+		data.settingsItem.children.push_back(&data.difficultyItem);
+
+		data.difficultyItem.text.setString("Difficulty - " + game.diffivultyString);
+		data.difficultyItem.text.setFont(data.font);
+		data.difficultyItem.text.setCharacterSize(24);
+
+		data.navigationHintText.setFont(data.font);
+		data.navigationHintText.setCharacterSize(24);
+		data.navigationHintText.setFillColor(sf::Color::White);
+		data.navigationHintText.setPosition(20, 10);
+		data.navigationHintText.setString("Arrows - Navigate\nEnter - Select\nEsc - Return");
+
 		InitMenuItem(data.menu.rootItem);
 		SelectMenuItem(data.menu, &data.startGameItem);
 	}
 
 	void UpdateGameStateMainMenu(GameStateMainMenuData& data, Game& game, float deltaTime)
-	{
-		// Going to update mod selection here -----> 
+	{ 
+		data.difficultyItem.text.setString("Difficulty - " + game.diffivultyString);
 	}
 
 	void HandleGameStateMainMenuWindowEvent(GameStateMainMenuData& data, Game& game, const sf::Event& event)
@@ -71,6 +94,14 @@ namespace SnakeGame
 				if (data.menu.selectedItem == &data.startGameItem)
 				{
 					SwitchGameState(game, GameStateType::Playing);
+				}
+				else if (data.menu.selectedItem == &data.settingsItem)
+				{
+					ExpandSelectedItem(data.menu);
+				}
+				else if (data.menu.selectedItem == &data.difficultyItem)
+				{
+					ChangeDifficultyLevel(game, event);
 				}
 				else if (data.menu.selectedItem == &data.exitGameItem)
 				{
@@ -113,6 +144,8 @@ namespace SnakeGame
 		window.draw(*hintText);
 
 		DrawMenu(data.menu, window, viewSize / 2.f, { 0.5f, 0.f });
+
+		window.draw(data.navigationHintText);
 	}
 
 	void ShutDownGameStateMainMenu(GameStateMainMenuData& data, Game& game)

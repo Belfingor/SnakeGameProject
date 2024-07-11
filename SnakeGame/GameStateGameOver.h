@@ -15,6 +15,7 @@ namespace SnakeGame
 
 		sf::Text gameOverText;
 		sf::Text gameOverInputClueText;
+		sf::Text gameOverDifficultyText;
 
 	};
 

@@ -10,7 +10,7 @@ namespace SnakeGame
 		// Init Apple Sprite
 		apple.appleSprite.setTextureRect(sf::IntRect(48, 0, 8, 8));
 		apple.appleSprite.setScale(5, 5);
-		apple.appleSprite.setOrigin(SNAKE_SIZE / 10.f, SNAKE_SIZE / 10.f);
+		apple.appleSprite.setOrigin(TILE_SIZE / 10.f, TILE_SIZE / 10.f);
 	}
 	void DrawApple(Apple& apple, sf::RenderWindow& window)
 	{
@@ -19,8 +19,8 @@ namespace SnakeGame
 	}
 	Rectangle GetAppleCollider(const Apple& apple)
 	{
-		return { {apple.position.x - SNAKE_SIZE / 2.f, apple.position.y - SNAKE_SIZE / 2.f},
-			{SNAKE_SIZE, SNAKE_SIZE} };
+		return { {apple.position.x - TILE_SIZE / 2.f, apple.position.y - TILE_SIZE / 2.f},
+			{TILE_SIZE, TILE_SIZE} };
 	}
 }
 

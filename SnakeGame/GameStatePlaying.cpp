@@ -25,8 +25,16 @@ namespace SnakeGame
 		data.countdownText.setFillColor(sf::Color::White);
 		data.countdownText.setPosition( SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 3);
 
+		data.playingInputClueText.setFont(data.font);
+		data.playingInputClueText.setCharacterSize(24);
+		data.playingInputClueText.setFillColor(sf::Color::White);
+		data.playingInputClueText.setPosition(SCREEN_WIDTH / 2.6, SCREEN_HEIGHT / 5);
+		data.playingInputClueText.setString("Use Arrows to Move\n       Esc to Pause");
+
+
 		//InitGrid(game);
 		data.numApplesEaten = 0;
+		game.gameScore = 0;
 		data.grid.InitGrid();
 		MarkWallCellsAsUnavailable(data);
 		InitSnake(data.snake);
@@ -47,7 +55,7 @@ namespace SnakeGame
 			// Data to use Colliders
 			Rectangle headCollider = GetSnakeHeadCollider(data.snake);
 			Rectangle appleCollider = GetAppleCollider(data.apple);
-			Rectangle screenCollider = GetScreenColloder(); //if screen collision does not work, investigate this function here
+			Rectangle screenCollider = GetScreenColloder();
 			std::vector<Rectangle> tailColliders = GetSnakeTailCollider(data.snake);
 
 			if (DoShapesCollide(headCollider, appleCollider))
@@ -56,6 +64,7 @@ namespace SnakeGame
 				data.snake.tail.push_back(data.snake.tailSegment);
 				UpdateSnakeTail(data.snake); // Need to update snake tail here as well. Otherwise new tail segment spawns with coordinates (0,0) for one frame.
 				++data.numApplesEaten;
+				game.gameScore = data.numApplesEaten * game.gameScoreModifier;
 			}
 
 			for (const auto& tailCollider : tailColliders)
@@ -72,9 +81,9 @@ namespace SnakeGame
 				PushGameState(game, GameStateType::GameOver, false);
 			}
 
-			data.scoreCountText.setString("Score: " + std::to_string(data.numApplesEaten));
+			data.scoreCountText.setString("Score: " + std::to_string(game.gameScore));
 
-			if (data.snake.tail.size() + 1 == NUM_CELLS_ON_SCREEN) // 10 for testing now, will be == to total num of cell in final
+			if (data.snake.tail.size() + 1 == NUM_CELLS_ON_SCREEN)
 			{
 				game.isGameWon = true;
 			}
@@ -120,6 +129,9 @@ namespace SnakeGame
 				if (i == 0 || i == GRID_CELLS_HORIZONTAL - 1 || j == 0 || j == GRID_CELLS_VERTICAL - 1)
 				{
 					data.grid.cell[i][j].isAvailable = false;
+					data.grid.cell[i][j].wallSprite.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+					data.grid.cell[i][j].wallSprite.setFillColor(sf::Color::Red);
+					data.grid.cell[i][j].wallSprite.setPosition(sf::Vector2f(data.grid.cell[i][j].position.x * TILE_SIZE, data.grid.cell[i][j].position.y * TILE_SIZE));
 				}
 			}
 		}
@@ -139,11 +151,20 @@ namespace SnakeGame
 
 	void DrawGameStatePlaying(GameStatePlayingData& data, Game& game, sf::RenderWindow& window)
 	{
+		for (int i = 0; i < GRID_CELLS_HORIZONTAL; ++i)
+		{
+			for (int j = 0; j < GRID_CELLS_VERTICAL; ++j)
+			{
+				window.draw(data.grid.cell[i][j].wallSprite);
+			}
+		}
+		
 		DrawSnake(data.snake, window);
 		DrawApple(data.apple, window);
 		window.draw(data.scoreCountText);
 		while (data.timeSinceGameStarted <= PAUSE_TIME_IN_SECONDS)
 		{
+			window.draw(data.playingInputClueText);
 			if (data.timeSinceGameStarted < 1)
 			{
 				data.countdownText.setString("3");
@@ -160,7 +181,7 @@ namespace SnakeGame
 			window.draw(data.countdownText);
 			break;
 		}
-		
+		window.setFramerateLimit(FRAMES_PER_SECOND + game.gameSpeedModifier); // Setting FPS with adjusted speed
 	}
 	void ShutDownGameStatePlaying(GameStatePlayingData& data, Game& game)
 	{

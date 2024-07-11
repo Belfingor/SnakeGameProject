@@ -5,12 +5,82 @@
 #include "GameStateMainMenu.h"
 #include "GameStateExitDialog.h"
 #include "GameStateGameOver.h"
-//include other gamestate headers here
 
 
 namespace SnakeGame
 {
-//--------------------------------------------------------//GAME STATE STACK LOGIC//
+	//-------------------------------------------------------------------------------- GAME DIFFICULTY BITMASK
+	void ChangeDifficultyLevel(Game& game, const sf::Event event)
+	{
+		switch (game.difficulty)
+		{
+		case DifficultyLevelModes::DifficultyLevel1:
+			game.difficulty = DifficultyLevelModes::DifficultyLevel2;
+			break;
+		case DifficultyLevelModes::DifficultyLevel2:
+			game.difficulty = DifficultyLevelModes::DifficultyLevel3;
+			break;
+		case DifficultyLevelModes::DifficultyLevel3:
+			game.difficulty = DifficultyLevelModes::DifficultyLevel4;
+			break;
+		case DifficultyLevelModes::DifficultyLevel4:
+			game.difficulty = DifficultyLevelModes::DifficultyLevel5;
+			break;
+		case DifficultyLevelModes::DifficultyLevel5:
+			game.difficulty = DifficultyLevelModes::DifficultyLevel1;
+			break;
+		}
+		UpdateDifficultySettings(game);
+		UpdateDifficultyString(game);
+	}
+	void UpdateDifficultySettings(Game& game)
+	{
+		switch (game.difficulty)
+		{
+		case DifficultyLevelModes::DifficultyLevel1:
+			game.gameSpeedModifier = 0;
+			game.gameScoreModifier = 2;
+			break;
+		case DifficultyLevelModes::DifficultyLevel2:
+			game.gameSpeedModifier = 2;
+			game.gameScoreModifier = 4;
+			break;
+		case DifficultyLevelModes::DifficultyLevel3:
+			game.gameSpeedModifier = 4;
+			game.gameScoreModifier = 6;
+			break;
+		case DifficultyLevelModes::DifficultyLevel4:
+			game.gameSpeedModifier = 6;
+			game.gameScoreModifier = 8;
+			break;
+		case DifficultyLevelModes::DifficultyLevel5:
+			game.gameSpeedModifier = 8;
+			game.gameScoreModifier = 10;
+			break;
+		}
+	}
+	void UpdateDifficultyString(Game& game)
+	{
+		switch (game.difficulty)
+		{
+		case (DifficultyLevelModes::DifficultyLevel1):
+			game.diffivultyString = "Very Easy";
+			break;
+		case (DifficultyLevelModes::DifficultyLevel2):
+			game.diffivultyString = "Easy";
+			break;
+		case (DifficultyLevelModes::DifficultyLevel3):
+			game.diffivultyString = "Medium";
+			break;
+		case (DifficultyLevelModes::DifficultyLevel4):
+			game.diffivultyString = "Hard";
+			break;
+		case (DifficultyLevelModes::DifficultyLevel5):
+			game.diffivultyString = "Very Hard";
+			break;
+		}
+	}
+	//--------------------------------------------------------//GAME STATE STACK LOGIC//
 	void PushGameState(Game& game, GameStateType stateType, bool isExclusivelyVisible)
 	{
 		game.pendingGameStateType = stateType;

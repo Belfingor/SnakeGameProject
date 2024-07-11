@@ -16,7 +16,11 @@ namespace SnakeGame
 		MenuItem exitGameItem;
 		MenuItem yesItem;
 		MenuItem noItem;
+		MenuItem settingsItem;
+		MenuItem difficultyItem;
 		Menu menu;
+
+		sf::Text navigationHintText;
 	};
 
 	void InitGameStateMainMenu(GameStateMainMenuData& data, Game& game);

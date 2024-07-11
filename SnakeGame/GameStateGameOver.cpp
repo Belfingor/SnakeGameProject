@@ -28,8 +28,13 @@ namespace SnakeGame
 		data.gameOverInputClueText.setCharacterSize(24);
 		data.gameOverInputClueText.setFillColor(sf::Color::Yellow);
 		data.gameOverInputClueText.setPosition(20, 6);
-		data.gameOverInputClueText.setString("Space - Restart\nEsc - Main Menu");
+		data.gameOverInputClueText.setString("Restart (Space)\nMain Menu (ESC)");
 
+		data.gameOverDifficultyText.setFont(data.font);
+		data.gameOverDifficultyText.setCharacterSize(24);
+		data.gameOverDifficultyText.setFillColor(sf::Color::White);
+		data.gameOverDifficultyText.setPosition(10, SCREEN_HEIGHT - 34);
+		data.gameOverDifficultyText.setString("Difficulty (Enter) - "+ game.diffivultyString);
 	}
 	void ShutDownGameStateGameOver(GameStateGameOverData& data, Game& game)
 	{
@@ -48,14 +53,22 @@ namespace SnakeGame
 				SwitchGameState(game, GameStateType::MainMenu);
 			}
 		}
+		if (event.type == sf::Event::KeyPressed)
+		{
+			if (event.key.code == sf::Keyboard::Enter)
+			{
+				ChangeDifficultyLevel(game, event);
+			}
+		}
 	}
 	void UpdateGameStateGameOver(GameStateGameOverData& data, Game& game, float deltaTime)
 	{
-		// Nothing to update here
+		data.gameOverDifficultyText.setString("Difficulty (Enter) - " + game.diffivultyString);
 	}
 	void DrawGameStateGameOver(GameStateGameOverData& data, Game& game, sf::RenderWindow& window)
 	{
 		window.draw(data.gameOverText);
 		window.draw(data.gameOverInputClueText);
+		window.draw(data.gameOverDifficultyText);
 	}
 }

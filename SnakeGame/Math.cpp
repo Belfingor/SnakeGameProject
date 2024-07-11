@@ -75,38 +75,4 @@ namespace SnakeGame
 			}
 		}
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	/*bool DidSnakeCollideWithWall(Snake& snake)
-	{
-		return (snake.position.x + SNAKE_SIZE / 2 > SCREEN_WIDTH || snake.position.x - SNAKE_SIZE / 2 < 0 ||
-			snake.position.y + SNAKE_SIZE / 2 > SCREEN_HEIGHT || snake.position.y - SNAKE_SIZE / 2 < 0);
-	}
-
-	bool DidSnakeCollideWithTail(Snake& snake)
-	{
-		for (const auto& segment : snake.tail)
-		{
-			if (snake.position.x == segment.position.x && snake.position.y == segment.position.y)
-			{
-				return true;
-			}
-		}
-		return false;
-	}*/
 }

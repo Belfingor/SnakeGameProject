@@ -16,7 +16,7 @@ namespace SnakeGame
 		// Init SnakeHeadSprite here
 		snake.snakeHeadSprite.setTextureRect(sf::IntRect(8, 63, 8, 8));
 		snake.snakeHeadSprite.setScale(5, 5);
-		snake.snakeHeadSprite.setOrigin(SNAKE_SIZE / 10.f, SNAKE_SIZE / 10.f); 
+		snake.snakeHeadSprite.setOrigin(TILE_SIZE / 10.f, TILE_SIZE / 10.f); 
 
 		InitSnakeTail(snake);
 		UpdateSnakeState(snake); // Have to Update it here as well, so all sprite positions are in place
@@ -27,7 +27,7 @@ namespace SnakeGame
 		// Init Tail Sprite here
 		snake.tailSegment.snakeTailSprite.setTextureRect(sf::IntRect(40, 63, 8, 8));
 		snake.tailSegment.snakeTailSprite.setScale(5, 5);
-		snake.tailSegment.snakeTailSprite.setOrigin(SNAKE_SIZE / 10.f, SNAKE_SIZE / 10.f);
+		snake.tailSegment.snakeTailSprite.setOrigin(TILE_SIZE / 10.f, TILE_SIZE / 10.f);
 
 		for (int i = 0; i < NUM_TAILS; ++i)
 		{
@@ -91,26 +91,25 @@ namespace SnakeGame
 	{
 		snake.tailLeashX = snake.position.x;
 		snake.tailLeashY = snake.position.y;
-	
-		if (snake.direction == SnakeDirection::Right) // Right
+
+		switch (snake.direction)
 		{
+		case SnakeDirection::Right:
 			snake.position.x = snake.position.x + snake.snakeSpeed;
 			snake.snakeHeadSprite.setTextureRect(sf::IntRect(32, 63, 8, 8));
-		}
-		else if (snake.direction == SnakeDirection::Up) // Up
-		{
+			break;
+		case SnakeDirection::Up:
 			snake.position.y = snake.position.y - snake.snakeSpeed;
 			snake.snakeHeadSprite.setTextureRect(sf::IntRect(8, 63, 8, 8));
-		}
-		else if (snake.direction == SnakeDirection::Left) // Left
-		{
+			break;
+		case SnakeDirection::Left:
 			snake.position.x = snake.position.x - snake.snakeSpeed;
 			snake.snakeHeadSprite.setTextureRect(sf::IntRect(16, 63, 8, 8));
-		}
-		else if (snake.direction == SnakeDirection::Down) // Down
-		{
+			break;
+		case SnakeDirection::Down:
 			snake.position.y = snake.position.y + snake.snakeSpeed;
 			snake.snakeHeadSprite.setTextureRect(sf::IntRect(24, 63, 8, 8));
+			break;
 		}
 
 		UpdateSnakeTail(snake); // Going to update tail state here as well
@@ -128,8 +127,8 @@ namespace SnakeGame
 
 	Rectangle GetSnakeHeadCollider(const Snake& snake)
 	{
-		return { { snake.position.x - SNAKE_SIZE / 2.f, snake.position.y - SNAKE_SIZE / 2.f },
-			{ SNAKE_SIZE, SNAKE_SIZE } };
+		return { { snake.position.x - TILE_SIZE / 2.f, snake.position.y - TILE_SIZE / 2.f },
+			{ TILE_SIZE, TILE_SIZE } };
 	}
 
 
@@ -144,7 +143,7 @@ namespace SnakeGame
 		std::vector<Rectangle> colliders;
 		for (const auto& segment : snake.tail)
 		{
-			colliders.push_back({ segment.position.x - SNAKE_SIZE / 2.f, segment.position.y - SNAKE_SIZE / 2.f, SNAKE_SIZE, SNAKE_SIZE });
+			colliders.push_back({ segment.position.x - TILE_SIZE / 2.f, segment.position.y - TILE_SIZE / 2.f, TILE_SIZE, TILE_SIZE });
 		}
 		return colliders;
 	}

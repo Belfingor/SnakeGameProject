@@ -7,10 +7,22 @@
 #include <SFML/Graphics.hpp>
 #include <vector> 
 #include <cassert>
+#include <string>
 
 
 namespace SnakeGame
 {
+	enum class DifficultyLevelModes : std::uint8_t
+	{
+		DifficultyLevel1 = 1 << 0,
+		DifficultyLevel2 = 1 << 1,
+		DifficultyLevel3 = 1 << 2,
+		DifficultyLevel4 = 1 << 3,
+		DifficultyLevel5 = 1 << 4,
+
+		Default = DifficultyLevel1
+	};
+
 	enum class GameStateType
 	{
 		None = 0,
@@ -37,14 +49,22 @@ namespace SnakeGame
 
 	struct Game
 	{
+		DifficultyLevelModes difficulty = DifficultyLevelModes::Default;
 		std::vector<GameState> gameStateStack;
 		GameStateChangeType gameStateChangeType = GameStateChangeType::None;
 		GameStateType pendingGameStateType = GameStateType::None;
 		bool isPendingGameStateExclusivelyVisible = false;
 
 		bool isGameWon = false; // For identifying if game is lost or won;
+		int gameScore = 0;
+		int gameSpeedModifier = 0;
+		int gameScoreModifier = 2;
+		std::string diffivultyString = "Very Easy";
 	};
 
+	void ChangeDifficultyLevel(Game& game, const sf::Event event);
+	void UpdateDifficultySettings(Game& game);
+	void UpdateDifficultyString(Game& game);
 	//--------------------------------------------------------------------------------
 	void PushGameState(Game& game, GameStateType stateType, bool isExclusivelyVisible);
 	void PopGameState(Game& game);
