@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "Game.h"
 #include <cassert>
 #include "GameStatePlaying.h"
@@ -17,6 +18,8 @@ namespace SnakeGame
 		sf::Text gameOverInputClueText;
 		sf::Text gameOverDifficultyText;
 
+		sf::Sound gameOverSound;
+		sf::SoundBuffer gameOverSoundBuffer;
 	};
 
 	void InitGameStateGameOver(GameStateGameOverData& data, Game& game);

@@ -6,7 +6,7 @@ namespace SnakeGame
 	void InitGameStateGameOver(GameStateGameOverData& data, Game& game)
 	{
 		assert(data.font.loadFromFile("Resources/Fonts/Roboto-BlackItalic.ttf"));
-
+		assert(data.gameOverSoundBuffer.loadFromFile("Resources/Sounds/Maodin204__Lose.wav"));
 		
 		data.gameOverText.setFont(data.font);
 		data.gameOverText.setCharacterSize(48);
@@ -35,6 +35,10 @@ namespace SnakeGame
 		data.gameOverDifficultyText.setFillColor(sf::Color::White);
 		data.gameOverDifficultyText.setPosition(10, SCREEN_HEIGHT - 34);
 		data.gameOverDifficultyText.setString("Difficulty (Enter) - "+ game.diffivultyString);
+
+		data.gameOverSound.setBuffer(data.gameOverSoundBuffer); 
+		data.gameOverSound.setVolume(50.f);
+		data.gameOverSound.play();
 	}
 	void ShutDownGameStateGameOver(GameStateGameOverData& data, Game& game)
 	{

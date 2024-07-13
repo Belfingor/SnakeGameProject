@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "Constants.h"
 #include "Snake.h"
 #include "Apple.h"
@@ -10,10 +11,9 @@
 namespace SnakeGame
 {
 	struct Game;
-	//--------------------------------------------------------------------------------
 	struct Cell
 	{
-		// Identify coordinates in cell system overall
+		// Identify coordinates in cell system
 		Position2D position;
 		bool isAvailable = true;
 		sf::RectangleShape wallSprite;
@@ -77,6 +77,8 @@ namespace SnakeGame
 		Grid grid;
 		sf::Texture tileSetTexture; // Loading tile set here as it is used for all sprites possible
 		sf::Font font;
+		sf::Sound snakeHitSound;
+		sf::SoundBuffer snakeHitSoundBuffer;
 	
 
 		int numApplesEaten = 0; // For counting scores

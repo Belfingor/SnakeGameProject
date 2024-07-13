@@ -7,6 +7,8 @@ namespace SnakeGame
 	void InitGameStateMainMenu(GameStateMainMenuData& data, Game& game)
 	{
 		assert(data.font.loadFromFile("Resources/Fonts/Roboto-BlackItalic.ttf"));
+		assert(data.hoverSoundBuffer.loadFromFile("Resources/Sounds/Theevilsocks__menu-hover.wav"));
+		assert(data.enterSoundBuffer.loadFromFile("Resources/Sounds/Timgormly__Enter.wav"));
 
 		data.menu.rootItem.hintText.setString("SNAKE GAME");
 		data.menu.rootItem.hintText.setFont(data.font);
@@ -67,6 +69,11 @@ namespace SnakeGame
 		data.navigationHintText.setPosition(20, 10);
 		data.navigationHintText.setString("Arrows - Navigate\nEnter - Select\nEsc - Return");
 
+		data.hoverSound.setBuffer(data.hoverSoundBuffer);
+		data.hoverSound.setVolume(50.f);
+		data.enterSound.setBuffer(data.enterSoundBuffer);
+		data.enterSound.setVolume(50.f);
+
 		InitMenuItem(data.menu.rootItem);
 		SelectMenuItem(data.menu, &data.startGameItem);
 	}
@@ -91,6 +98,7 @@ namespace SnakeGame
 			}
 			else if (event.key.code == sf::Keyboard::Enter)
 			{
+				data.enterSound.play();
 				if (data.menu.selectedItem == &data.startGameItem)
 				{
 					SwitchGameState(game, GameStateType::Playing);
@@ -124,11 +132,13 @@ namespace SnakeGame
 			if (orientation == Orientation::Vertical && event.key.code == sf::Keyboard::Up ||
 				orientation == Orientation::Horizontal && event.key.code == sf::Keyboard::Left)
 			{
+				data.hoverSound.play();
 				SelectPreviousMenuItem(data.menu);
 			}
 			else if (orientation == Orientation::Vertical && event.key.code == sf::Keyboard::Down ||
 				orientation == Orientation::Horizontal && event.key.code == sf::Keyboard::Right)
 			{
+				data.hoverSound.play();
 				SelectNextMenuItem(data.menu);
 			}
 		}

@@ -10,6 +10,8 @@ namespace SnakeGame
 	{
 		assert(data.tileSetTexture.loadFromFile("Resources/SnakeTileSet.png"));
 		assert(data.font.loadFromFile("Resources/Fonts/Roboto-BlackItalic.ttf"));
+		assert(data.snakeHitSoundBuffer.loadFromFile("Resources/Sounds/Owlstorm__Snake_hit.wav"));
+		//-------------------------------------------------------------------------------- 
 
 		data.snake.snakeHeadSprite.setTexture(data.tileSetTexture);
 		data.snake.tailSegment.snakeTailSprite.setTexture(data.tileSetTexture);
@@ -31,6 +33,8 @@ namespace SnakeGame
 		data.playingInputClueText.setPosition(SCREEN_WIDTH / 2.6, SCREEN_HEIGHT / 5);
 		data.playingInputClueText.setString("Use Arrows to Move\n       Esc to Pause");
 
+		data.snakeHitSound.setBuffer(data.snakeHitSoundBuffer);
+		data.snakeHitSound.setVolume(50.f);
 
 		//InitGrid(game);
 		data.numApplesEaten = 0;
@@ -65,6 +69,7 @@ namespace SnakeGame
 				UpdateSnakeTail(data.snake); // Need to update snake tail here as well. Otherwise new tail segment spawns with coordinates (0,0) for one frame.
 				++data.numApplesEaten;
 				game.gameScore = data.numApplesEaten * game.gameScoreModifier;
+				data.snakeHitSound.play();
 			}
 
 			for (const auto& tailCollider : tailColliders)
@@ -94,6 +99,7 @@ namespace SnakeGame
 	void SpawnAppleInAvailableCell(GameStatePlayingData& data)
 	{
 		MarkUnavailableCells(data);
+		MarkWallCellsAsUnavailable(data);
 		data.grid.GetAvailableCells();
 		data.apple.position = data.grid.GetRandomAvailableCell();
 		data.apple.position.x = data.apple.position.x * TILE_SIZE + TILE_SIZE / 2;
@@ -106,11 +112,16 @@ namespace SnakeGame
 		{
 			for (int j = 0; j < GRID_CELLS_VERTICAL; ++j)
 			{
-				if (data.snake.position == data.grid.GetCellCoordinatesOnScreen(i, j))
+				if (data.snake.position == data.grid.GetCellCoordinatesOnScreen(i, j)) //marking all cells as available but the one that is in contact with snake's head
 				{
 					data.grid.cell[i][j].isAvailable = false;
 				}
-				for (const auto& segment : data.snake.tail)
+				else
+				{
+					data.grid.cell[i][j].isAvailable = true;
+				}
+
+				for (const auto& segment : data.snake.tail) //marking cells with snake's tail in there as unavailable
 				{
 					if (segment.position == data.grid.GetCellCoordinatesOnScreen(i, j))
 					{
@@ -118,6 +129,7 @@ namespace SnakeGame
 					}
 				}
 			}
+			
 		}
 	}
 	void MarkWallCellsAsUnavailable(GameStatePlayingData& data)

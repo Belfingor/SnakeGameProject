@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "MainMenu.h"
 
 
@@ -21,6 +22,11 @@ namespace SnakeGame
 		Menu menu;
 
 		sf::Text navigationHintText;
+
+		sf::Sound hoverSound;
+		sf::SoundBuffer hoverSoundBuffer;
+		sf::Sound enterSound;
+		sf::SoundBuffer enterSoundBuffer;
 	};
 
 	void InitGameStateMainMenu(GameStateMainMenuData& data, Game& game);
