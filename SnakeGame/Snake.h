@@ -3,10 +3,13 @@
 #include <vector>
 #include "Constants.h"
 #include "Math.h"
+#include "Game.h"
 
 
 namespace SnakeGame
 {
+	struct Game;
+
 	enum class SnakeDirection
 	{
 		Right = 0,
@@ -35,13 +38,16 @@ namespace SnakeGame
 		float tailLeashY = 0;
 
 		sf::Sprite snakeHeadSprite;
+
+		float deltaTimeToMove = 0;
+		bool readyToTurn = false;
 	};
 
 	void InitSnake(Snake& snake);
 	void InitSnakeTail(Snake& snake);
 	void UpdateSnakeTail(Snake& snake);
 	void HandleInput(Snake& snake);
-	void UpdateSnakeState(Snake& snake);
+	void UpdateSnakePosition(Snake& snake);
 	void DrawSnake(Snake& snake, sf::RenderWindow& window);
 	Rectangle GetSnakeHeadCollider(const Snake& snake);
 	Rectangle GetScreenColloder();

@@ -34,7 +34,7 @@ namespace SnakeGame
 		data.gameOverDifficultyText.setCharacterSize(24);
 		data.gameOverDifficultyText.setFillColor(sf::Color::White);
 		data.gameOverDifficultyText.setPosition(10, SCREEN_HEIGHT - 34);
-		data.gameOverDifficultyText.setString("Difficulty (Enter) - "+ game.diffivultyString);
+		data.gameOverDifficultyText.setString("Difficulty (Enter) - "+ game.difficultyString);
 
 		data.gameOverSound.setBuffer(data.gameOverSoundBuffer); 
 		data.gameOverSound.setVolume(50.f);
@@ -67,7 +67,7 @@ namespace SnakeGame
 	}
 	void UpdateGameStateGameOver(GameStateGameOverData& data, Game& game, float deltaTime)
 	{
-		data.gameOverDifficultyText.setString("Difficulty (Enter) - " + game.diffivultyString);
+		data.gameOverDifficultyText.setString("Difficulty (Enter) - " + game.difficultyString);
 	}
 	void DrawGameStateGameOver(GameStateGameOverData& data, Game& game, sf::RenderWindow& window)
 	{

@@ -57,9 +57,9 @@ namespace SnakeGame
 
 		bool isGameWon = false; // For identifying if game is lost or won;
 		int gameScore = 0;
-		int gameSpeedModifier = 0;
+		float gameSpeedModifier = 0.f;
 		int gameScoreModifier = 2;
-		std::string diffivultyString = "Very Easy";
+		std::string difficultyString = "Very Easy";
 	};
 
 	void ChangeDifficultyLevel(Game& game, const sf::Event event);

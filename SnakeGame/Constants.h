@@ -14,8 +14,8 @@ namespace SnakeGame
 	const int SNAKE_MOVEMENT_PER_FRAME = TILE_SIZE;
 	const int NUM_TAILS = 2; //Init number of tail segments
 	//--------------------------------------------------------------------------------
-	const float PAUSE_TIME_IN_SECONDS = 3.f;
-	const int FRAMES_PER_SECOND = 10;
+	const float PAUSE_TIME_IN_SECONDS_BEFORE_GAME_STARTS = 3.f;
+	const int FRAMES_PER_SECOND = 60;
 }
 
 

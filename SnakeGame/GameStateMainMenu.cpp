@@ -59,7 +59,7 @@ namespace SnakeGame
 		data.settingsItem.childSpacing = 10.f;
 		data.settingsItem.children.push_back(&data.difficultyItem);
 
-		data.difficultyItem.text.setString("Difficulty - " + game.diffivultyString);
+		data.difficultyItem.text.setString("Difficulty - " + game.difficultyString);
 		data.difficultyItem.text.setFont(data.font);
 		data.difficultyItem.text.setCharacterSize(24);
 
@@ -80,7 +80,7 @@ namespace SnakeGame
 
 	void UpdateGameStateMainMenu(GameStateMainMenuData& data, Game& game, float deltaTime)
 	{ 
-		data.difficultyItem.text.setString("Difficulty - " + game.diffivultyString);
+		data.difficultyItem.text.setString("Difficulty - " + game.difficultyString);
 	}
 
 	void HandleGameStateMainMenuWindowEvent(GameStateMainMenuData& data, Game& game, const sf::Event& event)

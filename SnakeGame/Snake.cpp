@@ -14,12 +14,12 @@ namespace SnakeGame
 		snake.direction = SnakeDirection::Right;
 
 		// Init SnakeHeadSprite here
-		snake.snakeHeadSprite.setTextureRect(sf::IntRect(8, 63, 8, 8));
+		snake.snakeHeadSprite.setTextureRect(sf::IntRect(32, 63, 8, 8));
 		snake.snakeHeadSprite.setScale(5, 5);
 		snake.snakeHeadSprite.setOrigin(TILE_SIZE / 10.f, TILE_SIZE / 10.f); 
 
 		InitSnakeTail(snake);
-		UpdateSnakeState(snake); // Have to Update it here as well, so all sprite positions are in place
+		UpdateSnakePosition(snake); // Have to Update it here as well, so all sprite positions are in place
 	}
 
 	void InitSnakeTail(Snake& snake)
@@ -60,59 +60,77 @@ namespace SnakeGame
 
 
 
-	void HandleInput(Snake& snake)// 0 - Right, 1 - Up, 2 - Left, 3 - Down. Will be enum class later
+	void HandleInput(Snake& snake)
 	{
 		
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && snake.direction != SnakeDirection::Left)
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && snake.direction != SnakeDirection::Left &&
+			snake.readyToTurn == true)
 		{
 			snake.direction = SnakeDirection::Right;
+			snake.readyToTurn = false;
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && snake.direction != SnakeDirection::Down)
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && snake.direction != SnakeDirection::Down &&
+			snake.readyToTurn == true)
 		{
 			snake.direction = SnakeDirection::Up;
+			snake.readyToTurn = false;
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && snake.direction != SnakeDirection::Right)
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && snake.direction != SnakeDirection::Right &&
+			snake.readyToTurn == true)
 		{
 			snake.direction = SnakeDirection::Left;
+			snake.readyToTurn = false;
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && snake.direction != SnakeDirection::Up)
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && snake.direction != SnakeDirection::Up &&
+			snake.readyToTurn == true)
 		{
 			snake.direction = SnakeDirection::Down;
+			snake.readyToTurn = false;
 		}
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) // THIS IS FOR TESTING PURPOSES WILL BE DELETED LATER
 		{
 			snake.tail.push_back(snake.tailSegment);
 		}
-		
-
 	}
 
-	void UpdateSnakeState(Snake& snake)
+	void UpdateSnakePosition(Snake& snake)
 	{
 		snake.tailLeashX = snake.position.x;
 		snake.tailLeashY = snake.position.y;
 
-		switch (snake.direction)
-		{
-		case SnakeDirection::Right:
-			snake.position.x = snake.position.x + snake.snakeSpeed;
-			snake.snakeHeadSprite.setTextureRect(sf::IntRect(32, 63, 8, 8));
-			break;
-		case SnakeDirection::Up:
-			snake.position.y = snake.position.y - snake.snakeSpeed;
-			snake.snakeHeadSprite.setTextureRect(sf::IntRect(8, 63, 8, 8));
-			break;
-		case SnakeDirection::Left:
-			snake.position.x = snake.position.x - snake.snakeSpeed;
-			snake.snakeHeadSprite.setTextureRect(sf::IntRect(16, 63, 8, 8));
-			break;
-		case SnakeDirection::Down:
-			snake.position.y = snake.position.y + snake.snakeSpeed;
-			snake.snakeHeadSprite.setTextureRect(sf::IntRect(24, 63, 8, 8));
-			break;
-		}
+		//if (snake.deltaTimeToMove > .6f)
+		//{
+			switch (snake.direction)
+			{
+			case SnakeDirection::Right:
+				snake.position.x = snake.position.x + snake.snakeSpeed;
+				snake.snakeHeadSprite.setTextureRect(sf::IntRect(32, 63, 8, 8));
+				snake.deltaTimeToMove = 0.f;
+				UpdateSnakeTail(snake);
+				break;
+			case SnakeDirection::Up:
+				snake.position.y = snake.position.y - snake.snakeSpeed;
+				snake.snakeHeadSprite.setTextureRect(sf::IntRect(8, 63, 8, 8));
+				snake.deltaTimeToMove = 0.f;
+				UpdateSnakeTail(snake);
+				break;
+			case SnakeDirection::Left:
+				snake.position.x = snake.position.x - snake.snakeSpeed;
+				snake.snakeHeadSprite.setTextureRect(sf::IntRect(16, 63, 8, 8));
+				snake.deltaTimeToMove = 0.f;
+				UpdateSnakeTail(snake);
+				break;
+			case SnakeDirection::Down:
+				snake.position.y = snake.position.y + snake.snakeSpeed;
+				snake.snakeHeadSprite.setTextureRect(sf::IntRect(24, 63, 8, 8));
+				snake.deltaTimeToMove = 0.f;
+				UpdateSnakeTail(snake);
+				break;
+			}
+			snake.readyToTurn = true;
+	//	}
 
-		UpdateSnakeTail(snake); // Going to update tail state here as well
+		
 		snake.snakeHeadSprite.setPosition(snake.position.x, snake.position.y); 
 	}
 

@@ -38,23 +38,23 @@ namespace SnakeGame
 		switch (game.difficulty)
 		{
 		case DifficultyLevelModes::DifficultyLevel1:
-			game.gameSpeedModifier = 0;
+			game.gameSpeedModifier = .0f;
 			game.gameScoreModifier = 2;
 			break;
 		case DifficultyLevelModes::DifficultyLevel2:
-			game.gameSpeedModifier = 2;
+			game.gameSpeedModifier = .05f;
 			game.gameScoreModifier = 4;
 			break;
 		case DifficultyLevelModes::DifficultyLevel3:
-			game.gameSpeedModifier = 4;
+			game.gameSpeedModifier = .1f;
 			game.gameScoreModifier = 6;
 			break;
 		case DifficultyLevelModes::DifficultyLevel4:
-			game.gameSpeedModifier = 6;
+			game.gameSpeedModifier = .15f;
 			game.gameScoreModifier = 8;
 			break;
 		case DifficultyLevelModes::DifficultyLevel5:
-			game.gameSpeedModifier = 8;
+			game.gameSpeedModifier = .20f;
 			game.gameScoreModifier = 10;
 			break;
 		}
@@ -64,19 +64,19 @@ namespace SnakeGame
 		switch (game.difficulty)
 		{
 		case (DifficultyLevelModes::DifficultyLevel1):
-			game.diffivultyString = "Very Easy";
+			game.difficultyString = "Very Easy";
 			break;
 		case (DifficultyLevelModes::DifficultyLevel2):
-			game.diffivultyString = "Easy";
+			game.difficultyString = "Easy";
 			break;
 		case (DifficultyLevelModes::DifficultyLevel3):
-			game.diffivultyString = "Medium";
+			game.difficultyString = "Medium";
 			break;
 		case (DifficultyLevelModes::DifficultyLevel4):
-			game.diffivultyString = "Hard";
+			game.difficultyString = "Hard";
 			break;
 		case (DifficultyLevelModes::DifficultyLevel5):
-			game.diffivultyString = "Very Hard";
+			game.difficultyString = "Very Hard";
 			break;
 		}
 	}

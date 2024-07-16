@@ -47,15 +47,21 @@ namespace SnakeGame
 
 		game.isGameWon = false;
 		data.timeSinceGameStarted = 0;
+		data.snake.deltaTimeToMove = 0;
 	}
 	void UpdateGameStatePlaying(GameStatePlayingData& data, Game& game, float deltaTime)
 	{
-		data.timeSinceGameStarted = data.timeSinceGameStarted + deltaTime;
+		data.timeSinceGameStarted += deltaTime;
+		data.snake.deltaTimeToMove += deltaTime;
 		
-		if (data.timeSinceGameStarted > PAUSE_TIME_IN_SECONDS)
+		if (data.timeSinceGameStarted > PAUSE_TIME_IN_SECONDS_BEFORE_GAME_STARTS)
 		{
 			HandleInput(data.snake);
-			UpdateSnakeState(data.snake);
+			if (data.snake.deltaTimeToMove > .25f - game.gameSpeedModifier)
+			{
+				UpdateSnakePosition(data.snake);
+			}
+			
 			// Data to use Colliders
 			Rectangle headCollider = GetSnakeHeadCollider(data.snake);
 			Rectangle appleCollider = GetAppleCollider(data.apple);
@@ -151,7 +157,6 @@ namespace SnakeGame
 
 	void HandleGameStatePlayingWindowEvent(GameStatePlayingData& data, Game& game, const sf::Event& event)
 	{
-		
 		if (event.type == sf::Event::KeyPressed)
 		{
 			if (event.key.code == sf::Keyboard::Escape)
@@ -174,7 +179,7 @@ namespace SnakeGame
 		DrawSnake(data.snake, window);
 		DrawApple(data.apple, window);
 		window.draw(data.scoreCountText);
-		while (data.timeSinceGameStarted <= PAUSE_TIME_IN_SECONDS)
+		while (data.timeSinceGameStarted <= PAUSE_TIME_IN_SECONDS_BEFORE_GAME_STARTS)
 		{
 			window.draw(data.playingInputClueText);
 			if (data.timeSinceGameStarted < 1)
@@ -193,7 +198,6 @@ namespace SnakeGame
 			window.draw(data.countdownText);
 			break;
 		}
-		window.setFramerateLimit(FRAMES_PER_SECOND + game.gameSpeedModifier); // Setting FPS with adjusted speed
 	}
 	void ShutDownGameStatePlaying(GameStatePlayingData& data, Game& game)
 	{
