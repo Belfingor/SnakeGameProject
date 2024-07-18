@@ -3,6 +3,7 @@
 #include "Apple.h"
 #include "Math.h"
 #include "Constants.h"
+#include "Scoreboard.h"
 
 #include <SFML/Graphics.hpp>
 #include <vector> 
@@ -49,6 +50,7 @@ namespace SnakeGame
 
 	struct Game
 	{
+		ScoreboardData scoreboardData;
 		DifficultyLevelModes difficulty = DifficultyLevelModes::Default;
 		std::vector<GameState> gameStateStack;
 		GameStateChangeType gameStateChangeType = GameStateChangeType::None;

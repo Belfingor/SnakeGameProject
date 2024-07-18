@@ -38,19 +38,19 @@ namespace SnakeGame
 		switch (game.difficulty)
 		{
 		case DifficultyLevelModes::DifficultyLevel1:
-			game.gameSpeedModifier = .0f;
+			game.gameSpeedModifier = .04f;
 			game.gameScoreModifier = 2;
 			break;
 		case DifficultyLevelModes::DifficultyLevel2:
-			game.gameSpeedModifier = .05f;
+			game.gameSpeedModifier = .07f;
 			game.gameScoreModifier = 4;
 			break;
 		case DifficultyLevelModes::DifficultyLevel3:
-			game.gameSpeedModifier = .1f;
+			game.gameSpeedModifier = .12f;
 			game.gameScoreModifier = 6;
 			break;
 		case DifficultyLevelModes::DifficultyLevel4:
-			game.gameSpeedModifier = .15f;
+			game.gameSpeedModifier = .17f;
 			game.gameScoreModifier = 8;
 			break;
 		case DifficultyLevelModes::DifficultyLevel5:

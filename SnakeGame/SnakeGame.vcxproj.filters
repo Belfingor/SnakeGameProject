@@ -37,6 +37,9 @@
     <ClCompile Include="GameStateExitDialog.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="Scoreboard.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Constants.h">
@@ -67,6 +70,9 @@
       <Filter>Sources</Filter>
     </ClInclude>
     <ClInclude Include="GameStateExitDialog.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Scoreboard.h">
       <Filter>Sources</Filter>
     </ClInclude>
   </ItemGroup>

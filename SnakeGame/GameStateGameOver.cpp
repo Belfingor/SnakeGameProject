@@ -1,4 +1,5 @@
 #include "GameStateGameOver.h"
+#include "Scoreboard.h"
 
 
 namespace SnakeGame
@@ -39,6 +40,9 @@ namespace SnakeGame
 		data.gameOverSound.setBuffer(data.gameOverSoundBuffer); 
 		data.gameOverSound.setVolume(50.f);
 		data.gameOverSound.play();
+
+
+		InitScoreboard(game.scoreboardData);
 	}
 	void ShutDownGameStateGameOver(GameStateGameOverData& data, Game& game)
 	{
@@ -74,5 +78,7 @@ namespace SnakeGame
 		window.draw(data.gameOverText);
 		window.draw(data.gameOverInputClueText);
 		window.draw(data.gameOverDifficultyText);
+		//DrawScoreBoard(game.scoreboardData, window);
+		window.draw(game.scoreboardData.scoreboardText);
 	}
 }

@@ -48,6 +48,9 @@ namespace SnakeGame
 		game.isGameWon = false;
 		data.timeSinceGameStarted = 0;
 		data.snake.deltaTimeToMove = 0;
+
+		game.scoreboardData.playerScore = 0;
+
 	}
 	void UpdateGameStatePlaying(GameStatePlayingData& data, Game& game, float deltaTime)
 	{
@@ -75,6 +78,7 @@ namespace SnakeGame
 				UpdateSnakeTail(data.snake); // Need to update snake tail here as well. Otherwise new tail segment spawns with coordinates (0,0) for one frame.
 				++data.numApplesEaten;
 				game.gameScore = data.numApplesEaten * game.gameScoreModifier;
+				game.scoreboardData.playerScore = game.gameScore;
 				data.snakeHitSound.play();
 			}
 
