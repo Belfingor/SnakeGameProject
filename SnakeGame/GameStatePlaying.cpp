@@ -86,14 +86,14 @@ namespace SnakeGame
 			{
 				if (DoShapesCollide(headCollider, tailCollider))
 				{
-					PushGameState(game, GameStateType::GameOver, false);
+					PushGameState(game, GameStateType::AddToScoreboard, true);
 					break;
 				}
 			}
 
 			if (!DoShapesCollide(headCollider, screenCollider))
 			{
-				PushGameState(game, GameStateType::GameOver, false);
+				PushGameState(game, GameStateType::AddToScoreboard, true);
 			}
 
 			data.scoreCountText.setString("Score: " + std::to_string(game.gameScore));

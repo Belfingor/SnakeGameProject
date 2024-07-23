@@ -5,6 +5,7 @@
 #include "GameStateMainMenu.h"
 #include "GameStateExitDialog.h"
 #include "GameStateGameOver.h"
+#include "GameStateAddToScoreboard.h"
 
 
 namespace SnakeGame
@@ -195,6 +196,12 @@ namespace SnakeGame
 			InitGameStateExitDialog(*(GameStateExitDialogData*)state.data, game);
 			break;
 		}
+		case GameStateType::AddToScoreboard:
+		{
+			state.data = new GameStateAddToScoreboardData();
+			InitGameStateAddToScoarboard(*(GameStateAddToScoreboardData*)state.data, game);
+			break;
+		}
 		case GameStateType::GameOver:
 		{
 			state.data = new GameStateGameOverData();
@@ -229,6 +236,12 @@ namespace SnakeGame
 			delete (GameStateExitDialogData*)state.data;
 			break;
 		}
+		case GameStateType::AddToScoreboard:
+		{
+			ShutDownGameStateAddToScoreboard(*(GameStateAddToScoreboardData*)state.data, game);
+			delete (GameStateAddToScoreboardData*)state.data;
+			break;
+		}
 		case GameStateType::GameOver:
 		{
 			ShutDownGameStateGameOver(*(GameStateGameOverData*)state.data, game);
@@ -260,6 +273,11 @@ namespace SnakeGame
 			HandleGameStateExitDialogWindowEvent(*(GameStateExitDialogData*)state.data, game, event);
 			break;
 		}
+		case GameStateType::AddToScoreboard:
+		{
+			HandleGameStateAddToScoreboardWindowEvent(*(GameStateAddToScoreboardData*)state.data, game, event);
+			break;
+		}
 		case GameStateType::GameOver:
 		{
 			HandleGameStateGameOverWindowEvent(*(GameStateGameOverData*)state.data, game, event);
@@ -271,7 +289,7 @@ namespace SnakeGame
 		}
 	}
 
-	void UpdateGameState(Game& game, GameState& state, float deltaTime) //check if i need delta time here later
+	void UpdateGameState(Game& game, GameState& state, float deltaTime)
 	{
 		switch (state.type)
 		{
@@ -288,6 +306,11 @@ namespace SnakeGame
 		case GameStateType::ExitDialog:
 		{
 			UpdateGameStateExitDialog(*(GameStateExitDialogData*)state.data, game, deltaTime);
+			break;
+		}
+		case GameStateType::AddToScoreboard:
+		{
+			UpdateGameStateAddToScoreboard(*(GameStateAddToScoreboardData*)state.data, game, deltaTime);
 			break;
 		}
 		case GameStateType::GameOver:
@@ -320,6 +343,11 @@ namespace SnakeGame
 			DrawGameStateExitDialog(*(GameStateExitDialogData*)state.data, game, window);
 			break;
 		}
+		case GameStateType::AddToScoreboard:
+		{
+			DrawGameStateAddToScoreboard(*(GameStateAddToScoreboardData*)state.data, game, window);
+			break;
+		}
 		case GameStateType::GameOver:
 		{
 			DrawGameStateGameOver(*(GameStateGameOverData*)state.data, game, window);
@@ -343,7 +371,6 @@ namespace SnakeGame
 
 	void HandleWindowEvents(Game& game, sf::RenderWindow& window)
 	{
-		// Read Events
 		sf::Event event;
 		while (window.pollEvent(event))
 		{

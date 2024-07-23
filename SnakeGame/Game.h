@@ -30,6 +30,7 @@ namespace SnakeGame
 		MainMenu,
 		Playing,
 		ExitDialog,
+		AddToScoreboard,
 		GameOver		
 	};
 

@@ -80,7 +80,7 @@ namespace SnakeGame
 
 	void UpdateGameStateMainMenu(GameStateMainMenuData& data, Game& game, float deltaTime)
 	{ 
-		data.difficultyItem.text.setString("Difficulty - " + game.difficultyString);
+		// Nothing to update here
 	}
 
 	void HandleGameStateMainMenuWindowEvent(GameStateMainMenuData& data, Game& game, const sf::Event& event)
@@ -110,6 +110,7 @@ namespace SnakeGame
 				else if (data.menu.selectedItem == &data.difficultyItem)
 				{
 					ChangeDifficultyLevel(game, event);
+					data.difficultyItem.text.setString("Difficulty - " + game.difficultyString);
 				}
 				else if (data.menu.selectedItem == &data.exitGameItem)
 				{

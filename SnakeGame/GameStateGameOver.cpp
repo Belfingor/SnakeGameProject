@@ -23,7 +23,6 @@ namespace SnakeGame
 			data.gameOverText.setFillColor(sf::Color::Red);
 			data.gameOverText.setPosition(SCREEN_WIDTH / 2.9f, SCREEN_HEIGHT / 2.5f);
 		}
-		
 
 		data.gameOverInputClueText.setFont(data.font);
 		data.gameOverInputClueText.setCharacterSize(24);
@@ -40,9 +39,6 @@ namespace SnakeGame
 		data.gameOverSound.setBuffer(data.gameOverSoundBuffer); 
 		data.gameOverSound.setVolume(50.f);
 		data.gameOverSound.play();
-
-
-		InitScoreboard(game.scoreboardData);
 	}
 	void ShutDownGameStateGameOver(GameStateGameOverData& data, Game& game)
 	{
@@ -60,25 +56,23 @@ namespace SnakeGame
 			{
 				SwitchGameState(game, GameStateType::MainMenu);
 			}
-		}
-		if (event.type == sf::Event::KeyPressed)
-		{
-			if (event.key.code == sf::Keyboard::Enter)
+			/*if (event.key.code == sf::Keyboard::Enter)        DISABLED WHILE CREATING A SCOREBOARD HANDLE LOGIC
 			{
 				ChangeDifficultyLevel(game, event);
-			}
+			}*/ 
 		}
+		
 	}
 	void UpdateGameStateGameOver(GameStateGameOverData& data, Game& game, float deltaTime)
 	{
 		data.gameOverDifficultyText.setString("Difficulty (Enter) - " + game.difficultyString);
+		UpdateScoreboardText(game.scoreboardData);
 	}
 	void DrawGameStateGameOver(GameStateGameOverData& data, Game& game, sf::RenderWindow& window)
 	{
 		window.draw(data.gameOverText);
 		window.draw(data.gameOverInputClueText);
 		window.draw(data.gameOverDifficultyText);
-		//DrawScoreBoard(game.scoreboardData, window);
 		window.draw(game.scoreboardData.scoreboardText);
 	}
 }
