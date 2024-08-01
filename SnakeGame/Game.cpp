@@ -365,8 +365,6 @@ namespace SnakeGame
 		game.pendingGameStateType = GameStateType::None;
 		game.isPendingGameStateExclusivelyVisible = false;
 		SwitchGameState(game, GameStateType::MainMenu);
-
-		//determine background setting here maybe? but define background rectangle in game struct first
 	}
 
 	void HandleWindowEvents(Game& game, sf::RenderWindow& window)

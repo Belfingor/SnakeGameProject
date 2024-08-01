@@ -38,11 +38,9 @@ namespace SnakeGame
 	{
 		Min, //Left or Top
 		Mid,
-		Max //Right or Top
+		Max //Right or Bottom
 	};
 
 	sf::Vector2f GetItemOrigin(const sf::Text& text, const sf::Vector2f& relativePosition);
 	void DrawItemsList(sf::RenderWindow& window, const std::vector<sf::Text*>& items, float spacing, Orientation orientation, Alignment alignment, const sf::Vector2f& position, const sf::Vector2f& origin);
-	/*bool DidSnakeCollideWithWall(Snake& snake);
-	bool DidSnakeCollideWithTail(Snake& snake);*/
 }

@@ -7,13 +7,11 @@ namespace SnakeGame
 {
 	void InitSnake(Snake& snake)
 	{
-		// Starting coordinates for snake
 		snake.position.x = SCREEN_WIDTH / 2.f - 20.f;
 		snake.position.y = SCREEN_HEIGHT / 2.f;
 		snake.snakeSpeed = SNAKE_MOVEMENT_PER_FRAME;
 		snake.direction = SnakeDirection::Right;
 
-		// Init SnakeHeadSprite here
 		snake.snakeHeadSprite.setTextureRect(sf::IntRect(32, 63, 8, 8));
 		snake.snakeHeadSprite.setScale(5, 5);
 		snake.snakeHeadSprite.setOrigin(TILE_SIZE / 10.f, TILE_SIZE / 10.f); 
@@ -24,18 +22,16 @@ namespace SnakeGame
 
 	void InitSnakeTail(Snake& snake)
 	{
-		// Init Tail Sprite here
 		snake.tailSegment.snakeTailSprite.setTextureRect(sf::IntRect(40, 63, 8, 8));
 		snake.tailSegment.snakeTailSprite.setScale(5, 5);
 		snake.tailSegment.snakeTailSprite.setOrigin(TILE_SIZE / 10.f, TILE_SIZE / 10.f);
 
 		for (int i = 0; i < NUM_TAILS; ++i)
 		{
-			// Init tail segment position
 			snake.tailSegment.position.x = snake.position.x - TILE_SIZE;
 			snake.tailSegment.position.y = snake.position.y;
 
-			snake.tail.push_back(snake.tailSegment); // Add the tail segment to the snake's tail vector
+			snake.tail.push_back(snake.tailSegment);
 		}
 	} 
 
@@ -87,10 +83,6 @@ namespace SnakeGame
 			snake.direction = SnakeDirection::Down;
 			snake.readyToTurn = false;
 		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) // THIS IS FOR TESTING PURPOSES WILL BE DELETED LATER
-		{
-			snake.tail.push_back(snake.tailSegment);
-		}
 	}
 
 	void UpdateSnakePosition(Snake& snake)
@@ -98,39 +90,34 @@ namespace SnakeGame
 		snake.tailLeashX = snake.position.x;
 		snake.tailLeashY = snake.position.y;
 
-		//if (snake.deltaTimeToMove > .6f)
-		//{
-			switch (snake.direction)
-			{
-			case SnakeDirection::Right:
-				snake.position.x = snake.position.x + snake.snakeSpeed;
-				snake.snakeHeadSprite.setTextureRect(sf::IntRect(32, 63, 8, 8));
-				snake.deltaTimeToMove = 0.f;
-				UpdateSnakeTail(snake);
-				break;
-			case SnakeDirection::Up:
-				snake.position.y = snake.position.y - snake.snakeSpeed;
-				snake.snakeHeadSprite.setTextureRect(sf::IntRect(8, 63, 8, 8));
-				snake.deltaTimeToMove = 0.f;
-				UpdateSnakeTail(snake);
-				break;
-			case SnakeDirection::Left:
-				snake.position.x = snake.position.x - snake.snakeSpeed;
-				snake.snakeHeadSprite.setTextureRect(sf::IntRect(16, 63, 8, 8));
-				snake.deltaTimeToMove = 0.f;
-				UpdateSnakeTail(snake);
-				break;
-			case SnakeDirection::Down:
-				snake.position.y = snake.position.y + snake.snakeSpeed;
-				snake.snakeHeadSprite.setTextureRect(sf::IntRect(24, 63, 8, 8));
-				snake.deltaTimeToMove = 0.f;
-				UpdateSnakeTail(snake);
-				break;
-			}
-			snake.readyToTurn = true;
-	//	}
-
-		
+		switch (snake.direction)
+		{
+		case SnakeDirection::Right:
+			snake.position.x = snake.position.x + snake.snakeSpeed;
+			snake.snakeHeadSprite.setTextureRect(sf::IntRect(32, 63, 8, 8));
+			snake.deltaTimeToMove = 0.f;
+			UpdateSnakeTail(snake);
+			break;
+		case SnakeDirection::Up:
+			snake.position.y = snake.position.y - snake.snakeSpeed;
+			snake.snakeHeadSprite.setTextureRect(sf::IntRect(8, 63, 8, 8));
+			snake.deltaTimeToMove = 0.f;
+			UpdateSnakeTail(snake);
+			break;
+		case SnakeDirection::Left:
+			snake.position.x = snake.position.x - snake.snakeSpeed;
+			snake.snakeHeadSprite.setTextureRect(sf::IntRect(16, 63, 8, 8));
+			snake.deltaTimeToMove = 0.f;
+			UpdateSnakeTail(snake);
+			break;
+		case SnakeDirection::Down:
+			snake.position.y = snake.position.y + snake.snakeSpeed;
+			snake.snakeHeadSprite.setTextureRect(sf::IntRect(24, 63, 8, 8));
+			snake.deltaTimeToMove = 0.f;
+			UpdateSnakeTail(snake);
+			break;
+		}
+		snake.readyToTurn = true;
 		snake.snakeHeadSprite.setPosition(snake.position.x, snake.position.y); 
 	}
 
@@ -150,8 +137,7 @@ namespace SnakeGame
 	}
 
 
-	// Getting screen collider here for snake_boarder collision
-	Rectangle GetScreenColloder()
+	Rectangle GetBoarderCollider()
 	{
 		return { {TILE_SIZE, TILE_SIZE} ,{ SCREEN_WIDTH - TILE_SIZE*2, SCREEN_HEIGHT - TILE_SIZE*2} };
 	}

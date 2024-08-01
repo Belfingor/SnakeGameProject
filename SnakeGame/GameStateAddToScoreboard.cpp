@@ -9,6 +9,7 @@ namespace SnakeGame
 	{
 		assert(data.font.loadFromFile("Resources/Fonts/Roboto-BlackItalic.ttf"));
 		assert(data.hoverSoundBuffer.loadFromFile("Resources/Sounds/Theevilsocks__menu-hover.wav"));
+		assert(data.gameOverSoundBuffer.loadFromFile("Resources/Sounds/Maodin204__Lose.wav"));
 
 		data.playerScoreText.setString("Your Score: " + std::to_string(game.scoreboardData.playerScore));
 		data.playerScoreText.setFont(data.font);
@@ -50,6 +51,10 @@ namespace SnakeGame
 		data.hoverSound.setBuffer(data.hoverSoundBuffer);
 		data.hoverSound.setVolume(50.f);
 
+		data.gameOverSound.setBuffer(data.gameOverSoundBuffer);
+		data.gameOverSound.setVolume(50.f);
+		data.gameOverSound.play();
+
 		InitMenuItem(data.menu.rootItem);
 		SelectMenuItem(data.menu, &data.noItem);
 		InitScoreboard(game.scoreboardData);
@@ -57,7 +62,7 @@ namespace SnakeGame
 
 	void UpdateGameStateAddToScoreboard(GameStateAddToScoreboardData& data, Game& game, float deltaTime)
 	{
-		// Nothing to Update Here
+		UpdateScoreboardText(game.scoreboardData, 5, false);
 	}
 
 	void HandleGameStateAddToScoreboardWindowEvent(GameStateAddToScoreboardData& data, Game& game, const sf::Event& event)
@@ -79,7 +84,7 @@ namespace SnakeGame
 				{
 					ExpandSelectedItem(data.menu);
 				}
-				else if (data.menu.selectedItem == &data.typingNameTextItem)
+				else if (data.menu.selectedItem == &data.typingNameTextItem && game.scoreboardData.playerName != "")
 				{
 					SwitchGameState(game, GameStateType::GameOver);
 					AddPlayerScoreToScoreboard(game.scoreboardData);
@@ -118,7 +123,6 @@ namespace SnakeGame
 
 		DrawMenu(data.menu, window, viewSize / 2.f, { 0.5f, 0.f });
 
-		window.draw(data.playerScoreText);
 		window.draw(game.scoreboardData.scoreboardText);
 	}
 	void ShutDownGameStateAddToScoreboard(GameStateAddToScoreboardData& data, Game& game)

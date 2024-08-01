@@ -7,7 +7,6 @@ namespace SnakeGame
 	void InitGameStateGameOver(GameStateGameOverData& data, Game& game)
 	{
 		assert(data.font.loadFromFile("Resources/Fonts/Roboto-BlackItalic.ttf"));
-		assert(data.gameOverSoundBuffer.loadFromFile("Resources/Sounds/Maodin204__Lose.wav"));
 		
 		data.gameOverText.setFont(data.font);
 		data.gameOverText.setCharacterSize(48);
@@ -27,18 +26,14 @@ namespace SnakeGame
 		data.gameOverInputClueText.setFont(data.font);
 		data.gameOverInputClueText.setCharacterSize(24);
 		data.gameOverInputClueText.setFillColor(sf::Color::Yellow);
-		data.gameOverInputClueText.setPosition(20, 6);
-		data.gameOverInputClueText.setString("Restart (Space)\nMain Menu (ESC)");
+		data.gameOverInputClueText.setPosition(50, 6);
+		data.gameOverInputClueText.setString("Restart (Enter)\nMain Menu (ESC)");
 
 		data.gameOverDifficultyText.setFont(data.font);
 		data.gameOverDifficultyText.setCharacterSize(24);
-		data.gameOverDifficultyText.setFillColor(sf::Color::White);
-		data.gameOverDifficultyText.setPosition(10, SCREEN_HEIGHT - 34);
-		data.gameOverDifficultyText.setString("Difficulty (Enter) - "+ game.difficultyString);
-
-		data.gameOverSound.setBuffer(data.gameOverSoundBuffer); 
-		data.gameOverSound.setVolume(50.f);
-		data.gameOverSound.play();
+		data.gameOverDifficultyText.setFillColor(sf::Color::Yellow);
+		data.gameOverDifficultyText.setPosition(SCREEN_WIDTH / 2, 6);
+		data.gameOverDifficultyText.setString("Difficulty (Space) - "+ game.difficultyString);
 	}
 	void ShutDownGameStateGameOver(GameStateGameOverData& data, Game& game)
 	{
@@ -48,7 +43,7 @@ namespace SnakeGame
 	{
 		if (event.type == sf::Event::KeyPressed)
 		{
-			if (event.key.code == sf::Keyboard::Space)
+			if (event.key.code == sf::Keyboard::Enter)
 			{
 				SwitchGameState(game, GameStateType::Playing);
 			}
@@ -56,17 +51,16 @@ namespace SnakeGame
 			{
 				SwitchGameState(game, GameStateType::MainMenu);
 			}
-			/*if (event.key.code == sf::Keyboard::Enter)        DISABLED WHILE CREATING A SCOREBOARD HANDLE LOGIC
+			if (event.key.code == sf::Keyboard::Space)
 			{
 				ChangeDifficultyLevel(game, event);
-			}*/ 
+			}
 		}
 		
 	}
 	void UpdateGameStateGameOver(GameStateGameOverData& data, Game& game, float deltaTime)
 	{
-		data.gameOverDifficultyText.setString("Difficulty (Enter) - " + game.difficultyString);
-		UpdateScoreboardText(game.scoreboardData);
+		data.gameOverDifficultyText.setString("Difficulty (Space) - " + game.difficultyString);
 	}
 	void DrawGameStateGameOver(GameStateGameOverData& data, Game& game, sf::RenderWindow& window)
 	{

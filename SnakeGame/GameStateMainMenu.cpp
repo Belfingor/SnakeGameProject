@@ -9,6 +9,9 @@ namespace SnakeGame
 		assert(data.font.loadFromFile("Resources/Fonts/Roboto-BlackItalic.ttf"));
 		assert(data.hoverSoundBuffer.loadFromFile("Resources/Sounds/Theevilsocks__menu-hover.wav"));
 		assert(data.enterSoundBuffer.loadFromFile("Resources/Sounds/Timgormly__Enter.wav"));
+		InitScoreboard(game.scoreboardData);
+		SortScoreBoard(game.scoreboardData);
+		UpdateScoreboardText(game.scoreboardData, 10, true);
 
 		data.menu.rootItem.hintText.setString("SNAKE GAME");
 		data.menu.rootItem.hintText.setFont(data.font);
@@ -18,14 +21,52 @@ namespace SnakeGame
 		data.menu.rootItem.childAlignment = Alignment::Mid;
 		data.menu.rootItem.childSpacing = 10.f;
 		data.menu.rootItem.children.push_back(&data.startGameItem);
-		// Insert more items here ---->
 		data.menu.rootItem.children.push_back(&data.settingsItem);
+		data.menu.rootItem.children.push_back(&data.scoreboardItem);
 		data.menu.rootItem.children.push_back(&data.exitGameItem);
-
+		//--------------------------------------------------------------------------------
 		data.startGameItem.text.setString("Start game");
 		data.startGameItem.text.setFont(data.font);
 		data.startGameItem.text.setCharacterSize(24);
+		//--------------------------------------------------------------------------------
+		data.settingsItem.text.setString("Settings");
+		data.settingsItem.text.setFont(data.font);
+		data.settingsItem.text.setCharacterSize(24);
+		data.settingsItem.hintText.setString("Game Settings");
+		data.settingsItem.hintText.setFont(data.font);
+		data.settingsItem.hintText.setCharacterSize(48);
+		data.settingsItem.hintText.setFillColor(sf::Color::Red);
+		data.settingsItem.childOrientation = Orientation::Vertical;
+		data.settingsItem.childAlignment = Alignment::Min;
+		data.settingsItem.childSpacing = 10.f;
+		data.settingsItem.children.push_back(&data.difficultyItem);
+		data.settingsItem.children.push_back(&data.musigSettingItem);
 
+		data.difficultyItem.text.setString("Difficulty - " + game.difficultyString);
+		data.difficultyItem.text.setFont(data.font);
+		data.difficultyItem.text.setCharacterSize(24);
+
+		data.musigSettingItem.text.setString("Music - ON");
+		data.musigSettingItem.text.setFont(data.font);
+		data.musigSettingItem.text.setCharacterSize(24);
+		//--------------------------------------------------------------------------------
+		data.scoreboardItem.text.setString("Scoreboard");
+		data.scoreboardItem.text.setFont(data.font);
+		data.scoreboardItem.text.setCharacterSize(24);
+		data.scoreboardItem.hintText.setString("Scoreboard");
+		data.scoreboardItem.hintText.setFont(data.font);
+		data.scoreboardItem.hintText.setCharacterSize(48);
+		data.scoreboardItem.hintText.setFillColor(sf::Color::Red);
+		data.scoreboardItem.childOrientation = Orientation::Vertical;
+		data.scoreboardItem.childAlignment = Alignment::Min;
+		data.scoreboardItem.childSpacing = 10.f;
+		data.scoreboardItem.children.push_back(&data.scoresItem);
+
+		data.scoresItem.text.setString(game.scoreboardData.scoreboardText.getString());
+		data.scoresItem.text.setFont(data.font);
+		data.scoresItem.text.setCharacterSize(20);
+		data.scoresItem.isData = true;
+		//--------------------------------------------------------------------------------
 		data.exitGameItem.text.setString("Exit Game");
 		data.exitGameItem.text.setFont(data.font);
 		data.exitGameItem.text.setCharacterSize(24);
@@ -46,23 +87,7 @@ namespace SnakeGame
 		data.noItem.text.setString("No");
 		data.noItem.text.setFont(data.font);
 		data.noItem.text.setCharacterSize(24);
-
-		data.settingsItem.text.setString("Settings");
-		data.settingsItem.text.setFont(data.font);
-		data.settingsItem.text.setCharacterSize(24);
-		data.settingsItem.hintText.setString("Game Settings");
-		data.settingsItem.hintText.setFont(data.font);
-		data.settingsItem.hintText.setCharacterSize(48);
-		data.settingsItem.hintText.setFillColor(sf::Color::Red);
-		data.settingsItem.childOrientation = Orientation::Vertical;
-		data.settingsItem.childAlignment = Alignment::Max;
-		data.settingsItem.childSpacing = 10.f;
-		data.settingsItem.children.push_back(&data.difficultyItem);
-
-		data.difficultyItem.text.setString("Difficulty - " + game.difficultyString);
-		data.difficultyItem.text.setFont(data.font);
-		data.difficultyItem.text.setCharacterSize(24);
-
+		//--------------------------------------------------------------------------------
 		data.navigationHintText.setFont(data.font);
 		data.navigationHintText.setCharacterSize(24);
 		data.navigationHintText.setFillColor(sf::Color::White);
@@ -80,7 +105,14 @@ namespace SnakeGame
 
 	void UpdateGameStateMainMenu(GameStateMainMenuData& data, Game& game, float deltaTime)
 	{ 
-		// Nothing to update here
+		if (game.musicOn)
+		{
+			data.musigSettingItem.text.setString("Music - ON");
+		}
+		else
+		{
+			data.musigSettingItem.text.setString("Music - OFF");
+		}
 	}
 
 	void HandleGameStateMainMenuWindowEvent(GameStateMainMenuData& data, Game& game, const sf::Event& event)
@@ -111,6 +143,21 @@ namespace SnakeGame
 				{
 					ChangeDifficultyLevel(game, event);
 					data.difficultyItem.text.setString("Difficulty - " + game.difficultyString);
+				}
+				else if (data.menu.selectedItem == &data.musigSettingItem)
+				{
+					if (game.musicOn)
+					{
+						game.musicOn = false;
+					}
+					else
+					{
+						game.musicOn = true;
+					}
+				}
+				else if (data.menu.selectedItem == &data.scoreboardItem)
+				{
+					ExpandSelectedItem(data.menu);
 				}
 				else if (data.menu.selectedItem == &data.exitGameItem)
 				{

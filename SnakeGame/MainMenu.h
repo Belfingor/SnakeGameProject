@@ -20,6 +20,7 @@ namespace SnakeGame
 		sf::Color deselectedColor = sf::Color::White;
 
 		bool isEnabled = true;
+		bool isData = false;
 		std::vector<MenuItem*> children;
 
 		MenuItem* parent = nullptr;

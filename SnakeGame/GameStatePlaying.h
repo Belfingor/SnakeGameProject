@@ -13,10 +13,10 @@ namespace SnakeGame
 	struct Game;
 	struct Cell
 	{
-		// Identify coordinates in cell system
+		// Identify coordinates in grid system
 		Position2D position;
 		bool isAvailable = true;
-		sf::RectangleShape wallSprite;
+		sf::Sprite wallSprite;
 	};
 	struct Grid
 	{
@@ -75,13 +75,14 @@ namespace SnakeGame
 		Snake snake;
 		Apple apple;
 		Grid grid;
-		sf::Texture tileSetTexture; // Loading tile set here as it is used for all sprites possible
+		sf::Texture tileSetTexture;
 		sf::Font font;
 		sf::Sound snakeHitSound;
 		sf::SoundBuffer snakeHitSoundBuffer;
-	
+		sf::Sound backgroundMusic;
+		sf::SoundBuffer backgroundMusicBuffer;
 
-		int numApplesEaten = 0; // For counting scores
+		int numApplesEaten = 0;
 		float timeSinceGameStarted = 0;
 		
 		//UI data
@@ -96,7 +97,7 @@ namespace SnakeGame
 	void SpawnAppleInAvailableCell(GameStatePlayingData& data);
 	void MarkUnavailableCells(GameStatePlayingData& data);
 	void MarkWallCellsAsUnavailable(GameStatePlayingData& data);
-	void HandleGameStatePlayingWindowEvent(GameStatePlayingData& data, Game& game, const sf::Event& event); // TO BE COMPLETED WHEN STATE LOGIC IS DONE
+	void HandleGameStatePlayingWindowEvent(GameStatePlayingData& data, Game& game, const sf::Event& event);
 	void DrawGameStatePlaying(GameStatePlayingData& data, Game& game, sf::RenderWindow& window);
 	void ShutDownGameStatePlaying(GameStatePlayingData& data, Game& game);
 }

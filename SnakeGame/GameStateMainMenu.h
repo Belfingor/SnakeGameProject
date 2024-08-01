@@ -19,10 +19,13 @@ namespace SnakeGame
 		MenuItem noItem;
 		MenuItem settingsItem;
 		MenuItem difficultyItem;
+		MenuItem scoreboardItem;
+		MenuItem scoresItem;
+		MenuItem musigSettingItem;
 		Menu menu;
 
 		sf::Text navigationHintText;
-
+		
 		sf::Sound hoverSound;
 		sf::SoundBuffer hoverSoundBuffer;
 		sf::Sound enterSound;

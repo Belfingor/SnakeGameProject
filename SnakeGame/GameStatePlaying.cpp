@@ -11,6 +11,7 @@ namespace SnakeGame
 		assert(data.tileSetTexture.loadFromFile("Resources/SnakeTileSet.png"));
 		assert(data.font.loadFromFile("Resources/Fonts/Roboto-BlackItalic.ttf"));
 		assert(data.snakeHitSoundBuffer.loadFromFile("Resources/Sounds/Owlstorm__Snake_hit.wav"));
+		assert(data.backgroundMusicBuffer.loadFromFile("Resources/Sounds/Clinthammer__Background_Music.wav"));
 		//-------------------------------------------------------------------------------- 
 
 		data.snake.snakeHeadSprite.setTexture(data.tileSetTexture);
@@ -35,8 +36,14 @@ namespace SnakeGame
 
 		data.snakeHitSound.setBuffer(data.snakeHitSoundBuffer);
 		data.snakeHitSound.setVolume(50.f);
+		data.backgroundMusic.setBuffer(data.backgroundMusicBuffer);
+		data.backgroundMusic.setVolume(20.f);
+		data.backgroundMusic.setLoop(true);
+		if (game.musicOn)
+		{
+			data.backgroundMusic.play();
+		}
 
-		//InitGrid(game);
 		data.numApplesEaten = 0;
 		game.gameScore = 0;
 		data.grid.InitGrid();
@@ -68,7 +75,7 @@ namespace SnakeGame
 			// Data to use Colliders
 			Rectangle headCollider = GetSnakeHeadCollider(data.snake);
 			Rectangle appleCollider = GetAppleCollider(data.apple);
-			Rectangle screenCollider = GetScreenColloder();
+			Rectangle screenCollider = GetBoarderCollider();
 			std::vector<Rectangle> tailColliders = GetSnakeTailCollider(data.snake);
 
 			if (DoShapesCollide(headCollider, appleCollider))
@@ -86,14 +93,16 @@ namespace SnakeGame
 			{
 				if (DoShapesCollide(headCollider, tailCollider))
 				{
-					PushGameState(game, GameStateType::AddToScoreboard, true);
+					data.backgroundMusic.stop();
+					PushGameState(game, GameStateType::AddToScoreboard, false);
 					break;
 				}
 			}
 
 			if (!DoShapesCollide(headCollider, screenCollider))
 			{
-				PushGameState(game, GameStateType::AddToScoreboard, true);
+				data.backgroundMusic.stop();
+				PushGameState(game, GameStateType::AddToScoreboard, false);
 			}
 
 			data.scoreCountText.setString("Score: " + std::to_string(game.gameScore));
@@ -101,6 +110,7 @@ namespace SnakeGame
 			if (data.snake.tail.size() + 1 == NUM_CELLS_ON_SCREEN)
 			{
 				game.isGameWon = true;
+				PushGameState(game, GameStateType::AddToScoreboard, false);
 			}
 		}
 
@@ -151,8 +161,9 @@ namespace SnakeGame
 				if (i == 0 || i == GRID_CELLS_HORIZONTAL - 1 || j == 0 || j == GRID_CELLS_VERTICAL - 1)
 				{
 					data.grid.cell[i][j].isAvailable = false;
-					data.grid.cell[i][j].wallSprite.setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
-					data.grid.cell[i][j].wallSprite.setFillColor(sf::Color::Red);
+					data.grid.cell[i][j].wallSprite.setTexture(data.tileSetTexture);
+					data.grid.cell[i][j].wallSprite.setTextureRect(sf::IntRect(64, 8, 8, 8));
+					data.grid.cell[i][j].wallSprite.setScale(5, 5);
 					data.grid.cell[i][j].wallSprite.setPosition(sf::Vector2f(data.grid.cell[i][j].position.x * TILE_SIZE, data.grid.cell[i][j].position.y * TILE_SIZE));
 				}
 			}

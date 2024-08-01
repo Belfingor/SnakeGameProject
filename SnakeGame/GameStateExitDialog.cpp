@@ -11,7 +11,7 @@ namespace SnakeGame
 		data.exitHintText.setFont(data.font);
 		data.exitHintText.setCharacterSize(24);
 		data.exitHintText.setFillColor(sf::Color::White);
-		data.exitHintText.setPosition(20, SCREEN_HEIGHT / 2.3);
+		data.exitHintText.setPosition(50, SCREEN_HEIGHT / 2.3);
 		data.exitHintText.setString("PAUSE:\nReturn to main menu - Enter\nResume - Esc");
 	}
 

@@ -1,5 +1,5 @@
 #pragma once
-#include <SFML/Graphics.hpp> //for background rectangle
+#include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "MainMenu.h"
 #include "Game.h"
@@ -17,6 +17,8 @@ namespace SnakeGame
 
 		sf::Sound hoverSound;
 		sf::SoundBuffer hoverSoundBuffer;
+		sf::Sound gameOverSound;
+		sf::SoundBuffer gameOverSoundBuffer;
 	};
 
 	void InitGameStateAddToScoarboard(GameStateAddToScoreboardData& data, Game& game);

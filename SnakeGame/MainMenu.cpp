@@ -38,6 +38,11 @@ namespace SnakeGame
 		{
 			menu.selectedItem->text.setFillColor(menu.selectedItem->selectedColor);
 		}
+
+		if (item && item->isData)
+		{
+			menu.selectedItem->text.setFillColor(sf::Color::White);
+		}
 	}
 
 	bool SelectPreviousMenuItem(Menu& menu)

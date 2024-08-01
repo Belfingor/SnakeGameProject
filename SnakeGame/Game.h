@@ -58,11 +58,12 @@ namespace SnakeGame
 		GameStateType pendingGameStateType = GameStateType::None;
 		bool isPendingGameStateExclusivelyVisible = false;
 
-		bool isGameWon = false; // For identifying if game is lost or won;
+		bool isGameWon = false;
 		int gameScore = 0;
 		float gameSpeedModifier = 0.f;
 		int gameScoreModifier = 2;
 		std::string difficultyString = "Very Easy";
+		bool musicOn = true;
 	};
 
 	void ChangeDifficultyLevel(Game& game, const sf::Event event);
