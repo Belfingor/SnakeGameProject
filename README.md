@@ -1,5 +1,4 @@
 # Intoduction
-NOTE: Work in progress, project isn't complete yet but you are welcome to have a look on how it is going so far.
 This is a Project for my C++ for Game Development course. Classic Snake Game that we all are familiar with (using SFML Library).
 Just open Game.sln and enjoy.
 
